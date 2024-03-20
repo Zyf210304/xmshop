@@ -13,12 +13,22 @@ class HomeView extends GetView<HomeController> {
         title: const Text('HomeView'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Obx(() {
+            return Text(
+              '${controller.count}',
+              style: const TextStyle(fontSize: 20),
+            );
+          }),
+          SizedBox(height: 40),
+          ElevatedButton(onPressed: () {
+            Get.toNamed('/user');
+          }, child: Text("跳转按钮"))
+        ],
+      )),
     );
   }
 }
