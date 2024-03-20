@@ -4,20 +4,28 @@ import 'package:get/get.dart';
 
 import '../controllers/category_controller.dart';
 
+import '../../../services/screenAdapter.dart';
+
 class CategoryView extends GetView<CategoryController> {
   const CategoryView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print(ScreenAdapter.getScreenWidth());
+    print(ScreenAdapter.getScreenHeight());
     return Scaffold(
       appBar: AppBar(
         title: const Text('CategoryView'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'CategoryView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Column(
+        children: [
+          Container(
+            width: ScreenAdapter.width(1080),
+            height: ScreenAdapter.height(600),
+            color: Colors.yellow,
+            child: Text("手机",style: TextStyle(fontSize: ScreenAdapter.fontSize(34)),),
+          )
+        ],
       ),
     );
   }

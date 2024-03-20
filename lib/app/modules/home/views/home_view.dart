@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-
 import '../controllers/home_controller.dart';
-
 import '../../../services/keepAliveWrapper.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -15,11 +14,20 @@ class HomeView extends GetView<HomeController> {
         title: const Text('HomeView'),
         centerTitle: true,
       ),
-      body: ListView.builder(
-            itemCount: 15,
-            itemBuilder:(context, index) {
-            return ListTile(title: Text("list --- $index"),);
-          } ),
+      body: Column(
+        children: [ 
+          Container(
+            width: 1080.w,
+            height: 690.h,
+            color: Colors.red,
+          ),
+          SizedBox(height: 20.h,),
+          Container(width: 540.w, height: 690.h,
+          color: Colors.blue,
+            child: Text("手机", style: TextStyle(fontSize: 32.sp),),
+          )
+        ],
+      )
     ));
   }
 }
