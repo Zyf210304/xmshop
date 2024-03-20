@@ -13,7 +13,7 @@ class GiveView extends GetView<GiveController> {
         title: const Text('GiveView'),
         centerTitle: true,
       ),
-      body: const Center(
+      body: Center(
         child: Text(
           'GiveView is working',
           style: TextStyle(fontSize: 20),
