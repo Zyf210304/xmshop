@@ -3,12 +3,20 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const HOME = _Paths.HOME;
-  static const USER = _Paths.USER;
+  // static const HOME = _Paths.HOME;
+  // static const USER = _Paths.USER;
+  static const TABS = _Paths.TABS;
+  // static const CATEGORY = _Paths.CATEGORY;
+  // static const GIVE = _Paths.GIVE;
+  // static const CART = _Paths.CART;
 }
 
 abstract class _Paths {
   _Paths._();
-  static const HOME = '/home';
-  static const USER = '/user';
+  // static const HOME = '/home';
+  // static const USER = '/user';
+  static const TABS = '/tabs';
+  // static const CATEGORY = '/category';
+  // static const GIVE = '/give';
+  // static const CART = '/cart';
 }
