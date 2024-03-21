@@ -11,6 +11,7 @@ class TabsView extends GetView<TabsController> {
     return Obx(() => Scaffold(          
           body: PageView(
             controller:controller.pageController ,
+            physics: const NeverScrollableScrollPhysics(),
             children: controller.pages,
             onPageChanged: (index){
               controller.setCurrentIndex(index);
