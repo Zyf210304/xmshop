@@ -89,12 +89,12 @@ class HomeView extends GetView<HomeController> {
       child:ListView( 
         controller:  controller.scrollController,
         children: [ 
-          Container(
+          Container( 
             width: ScreenAdapter.width(1080),
             height:ScreenAdapter.height(682),
             child: Obx(() => Swiper(
               itemBuilder:(context, index) {
-                String picUrl = "https://miapp.itying.com/${controller.swiperlist[index]["pic"]}";
+                String picUrl = "https://miapp.itying.com/${controller.swiperlist[index].pic}";
 
                 return Image.network(picUrl.replaceAll("\\", "/"), fit: BoxFit.cover,);
               },

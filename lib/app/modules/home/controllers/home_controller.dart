@@ -1,7 +1,13 @@
+
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
+ 
+import 'package:xmshop/app/models/shop.dart';
+import '../../../models/focus_model.dart';
 
 
 class HomeController extends GetxController {
@@ -11,7 +17,7 @@ class HomeController extends GetxController {
 
   final ScrollController scrollController = ScrollController();
 
-  var swiperlist = [].obs; //需要定义成响应式
+  var swiperlist = <FocusItemModel>[].obs; //需要定义成响应式
 
   @override
   void onInit() {
@@ -22,6 +28,15 @@ class HomeController extends GetxController {
     //请求轮播图接口
     getFocusData();
 
+    // fromatJson();
+
+  }
+
+  void fromatJson() {
+    var strData='{"_id":"59f6ef443ce1fb0fb02c7a43","title":"笔记本电脑","status":1,"pic":"public/upload/UObZahqPYzFvx_C9CQjU8KiX.png","url":"12"}';
+    var shopModel =  ShopModel.fromJson(json.decode(strData));
+    print(shopModel.pic);
+    
   }
 
   @override
@@ -54,7 +69,9 @@ class HomeController extends GetxController {
   getFocusData() async{
     var response = await Dio().get("https://miapp.itying.com/api/focus");
     // print(response.data);
-    swiperlist.value = response.data["result"];
+    var  focus = FocusModel.fromJson(response.data);
+    swiperlist.value = focus.result!;
+
     update();
   }
 
