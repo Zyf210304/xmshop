@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
 import 'package:xmshop/app/models/category_model_model.dart';
+import 'package:xmshop/app/models/plist_model.dart';
 import 'package:xmshop/app/models/shop.dart';
 import '../../../models/focus_model.dart';
 
@@ -17,6 +18,9 @@ class HomeController extends GetxController {
 
   var swiperlist = <FocusItemModel>[].obs; //需要定义成响应式
   var cartogoryList = <CategoryItemModel>[].obs;
+  var bestSellingSwipeList = <FocusItemModel>[].obs;
+  var sellingPist = <PlistItemModel>[].obs;
+  var bestPlist = <PlistItemModel>[].obs;
 
   @override
   void onInit() {
@@ -29,6 +33,16 @@ class HomeController extends GetxController {
 
     //请求分类接口
     getCategoryData();
+
+    //甄选
+    getBsetSellingSwiperData();
+
+    //获取甄选里面的商品
+    getHotPlistData();
+
+    //获取热门商品
+    getBestPlistData();
+    
   }
 
   void fromatJson() {
@@ -73,10 +87,34 @@ class HomeController extends GetxController {
     update();
   }
 
+  getBsetSellingSwiperData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/focus?position=2");
+    // print(response.data);
+    var sellingList = FocusModel.fromJson(response.data);
+    bestSellingSwipeList.value = sellingList.result!;
+
+    update();
+  }
+
   getCategoryData() async {
     var response = await Dio().get("https://miapp.itying.com/api/bestCate");
     var catogry = CategoryModel.fromJson(response.data);
     cartogoryList.value = catogry.result!;
     update();
   }
+
+  getHotPlistData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/plist?is_hot=1");
+    var cellingPlist = PlistModel.fromJson(response.data);
+    sellingPist.value = cellingPlist.result!;
+    update();
+  }
+
+  getBestPlistData() async {
+    var response = await Dio().get("https://miapp.itying.com/api/plist?is_best=1");
+    var plist = PlistModel.fromJson(response.data);
+    bestPlist.value = plist.result!;
+    update();
+  }
+
 }
