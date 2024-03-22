@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:xmshop/app/models/category_model_model.dart';
-import 'package:dio/dio.dart';
-
+import '../../../services/httpsClient.dart';
 
 class CategoryController extends GetxController {
   //TODO: Implement CategoryController
@@ -9,6 +8,7 @@ class CategoryController extends GetxController {
   var selectIndex = 0.obs;
   var leftList = <CategoryItemModel>[].obs;
   var rightList = <CategoryItemModel>[].obs;
+  HttpClient httpsClient = HttpClient();
 
   @override
   void onInit() {
@@ -16,8 +16,6 @@ class CategoryController extends GetxController {
 
     //获取左侧一级分类
     getLeftListData();
-
-
   }
 
   @override
@@ -37,22 +35,25 @@ class CategoryController extends GetxController {
     update();
   }
 
-   getLeftListData() async {
-    var response = await Dio().get("https://miapp.itying.com/api/pcate");
-    var list = CategoryModel.fromJson(response.data);
-    leftList.value = list.result!;
-    getRightListData(leftList[0].sId);
-    update();
+  getLeftListData() async {
+    var response = await await httpsClient.get("api/pcate");
+    if (response != null) {
+      var list = CategoryModel.fromJson(response.data);
+      leftList.value = list.result!;
+      getRightListData(leftList[0].sId);
+      update();
+    } else {
+      print("左侧列表获取失败");
+    }
   }
 
   getRightListData(pid) async {
-    var response = await Dio().get("https://miapp.itying.com/api/pcate?pid=$pid");
-    var list = CategoryModel.fromJson(response.data);
-    rightList.value = list.result!;
-    print("-------$pid");
-    print(response);
-    print(list.result);
-    update();
-  }
+    var response = await await httpsClient.get("api/pcate?pid=$pid");
 
+    if (response != null) {
+      var list = CategoryModel.fromJson(response.data);
+      rightList.value = list.result!;
+      update();
+    }
+  }
 }

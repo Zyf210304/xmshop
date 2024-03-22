@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -8,6 +6,7 @@ import 'package:xmshop/app/services/keepAliveWrapper.dart';
 
 import '../controllers/category_controller.dart';
 
+import '../../../services/httpsClient.dart';
 import '../../../services/screenAdapter.dart';
 
 class CategoryView extends GetView<CategoryController> {
@@ -59,71 +58,90 @@ class CategoryView extends GetView<CategoryController> {
       body: Row(
         children: [
           SizedBox(
-            width: ScreenAdapter.width(280),
-            height: double.infinity,
-            child: Obx(() => ListView.builder(
-                itemCount: controller.leftList.length,
-                itemBuilder: (context, index) {
-                   CategoryItemModel model =  controller.leftList[index];
-                  return SizedBox(
-                      width: double.infinity,
-                      height: ScreenAdapter.height(180),
-                      child: Obx(() => InkWell(
-                       
-                            onTap: () {
-                              // controller.selectIndex.value = index;
-                              controller.changeIndex(index);
-                            },
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    width: ScreenAdapter.width(10),
-                                    height: ScreenAdapter.height(46),
-                                    color: controller.selectIndex == index
-                                        ? Colors.red
-                                        : Colors.transparent,
-                                  ),
+              width: ScreenAdapter.width(280),
+              height: double.infinity,
+              child: Obx(
+                () => ListView.builder(
+                    itemCount: controller.leftList.length,
+                    itemBuilder: (context, index) {
+                      CategoryItemModel model = controller.leftList[index];
+                      return SizedBox(
+                          width: double.infinity,
+                          height: ScreenAdapter.height(180),
+                          child: Obx(() => InkWell(
+                                onTap: () {
+                                  // controller.selectIndex.value = index;
+                                  controller.changeIndex(index);
+                                },
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                        width: ScreenAdapter.width(10),
+                                        height: ScreenAdapter.height(46),
+                                        color: controller.selectIndex == index
+                                            ? Colors.red
+                                            : Colors.transparent,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        model.title!,
+                                        style: TextStyle(
+                                            fontWeight:
+                                                controller.selectIndex == index
+                                                    ? FontWeight.bold
+                                                    : FontWeight.normal),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Center(
-                                  child: Text(model.title!, style: TextStyle(fontWeight: controller.selectIndex == index ? FontWeight.bold : FontWeight.normal),),
-                                )
-                              ],
-                            ),
-                          )));
-                }),)
-          ),
+                              )));
+                    }),
+              )),
           Expanded(
               child: Container(
-            height: double.infinity,
-            // color: Colors.black,
-            child: Obx(() => GridView.builder(
-                itemCount: controller.rightList.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: ScreenAdapter.width(40),
-                    mainAxisSpacing: ScreenAdapter.width(40),
-                    childAspectRatio: 2/3
-                    ),
-                itemBuilder: (context, index) {
-                  CategoryItemModel model =  controller.rightList[index];
-                  return Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        child: Image.network(
-                          ScreenAdapter().getUrl(model.pic),
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: ScreenAdapter.height(30)),
-                      child: Text(model.title!, style: TextStyle(fontSize: ScreenAdapter.fontSize(36)),),),
-                    ],
-                  );
-                }),)
-          ))
+                  height: double.infinity,
+                  // color: Colors.black,
+                  child: Obx(
+                    () => GridView.builder(
+                        itemCount: controller.rightList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: ScreenAdapter.width(40),
+                            mainAxisSpacing: ScreenAdapter.width(40),
+                            childAspectRatio: 2 / 3),
+                        itemBuilder: (context, index) {
+                          CategoryItemModel model = controller.rightList[index];
+                          return InkWell(
+                            onTap: () {
+                              Get.toNamed("/product-list",arguments: {"cid":model.sId});
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  child: Image.network(
+                                    HttpClient.replaceUri(model.pic),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: ScreenAdapter.height(30)),
+                                  child: Text(
+                                    model.title!,
+                                    style: TextStyle(
+                                        fontSize: ScreenAdapter.fontSize(36)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  )))
         ],
       ),
     ));

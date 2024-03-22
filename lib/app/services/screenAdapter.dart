@@ -23,9 +23,5 @@ class ScreenAdapter {
     return 1.sh;
   }
 
-  String getUrl(url) {
-    String picUrl = "https://miapp.itying.com/${url}";
-
-    return picUrl.replaceAll("\\", "/");
-  }
+  
 }
