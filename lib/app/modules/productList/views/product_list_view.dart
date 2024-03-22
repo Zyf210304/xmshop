@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/plist_model.dart';
 
 import '../controllers/product_list_controller.dart';
 import '../../../services/screenAdapter.dart';
+import '../../../services/httpsClient.dart';
 
 class ProductListView extends GetView<ProductListController> {
   const ProductListView({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class ProductListView extends GetView<ProductListController> {
         top: 0,
         child: Container(
           height: ScreenAdapter.width(120),
-          width: double.infinity,
+          width: ScreenAdapter.width(1080),
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border(
@@ -118,10 +120,14 @@ class ProductListView extends GetView<ProductListController> {
   }
 
   Widget _listView() {
-    return ListView.builder(
-        itemCount: 20,
+    return Obx(() =>controller.plist.isNotEmpty ?   ListView.builder(
+      controller: controller.scrollController,
+        itemCount: controller.plist.length,
         itemBuilder: (context, index) {
-          return Container(
+          PlistItemModel model = controller.plist[index];
+          return Column(
+            children: [
+              Container(
             margin: EdgeInsets.fromLTRB(
               ScreenAdapter.width(20),
               0,
@@ -138,7 +144,7 @@ class ProductListView extends GetView<ProductListController> {
                   width: ScreenAdapter.width(400),
                   height: ScreenAdapter.height(460),
                   child: Image.network(
-                    "https://xiaomi.itying.com/public/upload/5xyr9OTSK1pwJ5ng7YgpKOkd.png_200x200.png",
+                    HttpClient.replaceUri(model.pic),
                     fit: BoxFit.fitHeight,
                   ),
                 ),
@@ -150,7 +156,7 @@ class ProductListView extends GetView<ProductListController> {
                       padding:
                           EdgeInsets.only(bottom: ScreenAdapter.height(20)),
                       child: Text(
-                        "手机型号",
+                        model.title!,
                         style: TextStyle(
                             fontSize: ScreenAdapter.fontSize(42),
                             fontWeight: FontWeight.bold),
@@ -160,8 +166,9 @@ class ProductListView extends GetView<ProductListController> {
                       padding:
                           EdgeInsets.only(bottom: ScreenAdapter.height(20)),
                       child: Text(
-                        "手机描述信息",
+                        model.subTitle!,
                         maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: ScreenAdapter.fontSize(34),
                         ),
@@ -237,7 +244,7 @@ class ProductListView extends GetView<ProductListController> {
                       padding:
                           EdgeInsets.only(bottom: ScreenAdapter.height(20)),
                       child: Text(
-                        "价格",
+                        "￥${model.price}",
                         style: TextStyle(
                             color: Colors.red,
                             fontSize: ScreenAdapter.fontSize(38),
@@ -248,13 +255,32 @@ class ProductListView extends GetView<ProductListController> {
                 ))
               ],
             ),
+          ),
+          (index == controller.plist.length -1 ) ? _progressIndicator() : const Text(""),
+            ],
           );
-        });
+        }) : _progressIndicator());
+  }
+
+  //自定义组件
+  Widget _progressIndicator() {
+    if (controller.haseData.value) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      // return const Text("没有数据了， 我是有底线的------------------",textAlign: TextAlign.center,);
+      return Container(
+        alignment: Alignment.center,
+        height: 50,
+        child: const Text("没有数据了， 我是有底线的------------------",textAlign: TextAlign.center,),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(Get.arguments);
+    // print(Get.arguments);
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(246, 246, 246, 1),

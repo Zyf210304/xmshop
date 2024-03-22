@@ -14,6 +14,7 @@ class HttpClient {
   Future get(apiUrl) async {
     try {
       var response = await dio.get(apiUrl);
+      print(response.realUri);
       return response;
     } catch (error) {
       print("网络请求异常");
@@ -25,4 +26,6 @@ class HttpClient {
     String tempUrl = domain+picUrl;
     return tempUrl.replaceAll("\\", "/");
   }
+
+
 }

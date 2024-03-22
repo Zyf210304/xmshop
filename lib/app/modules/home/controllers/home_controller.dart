@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:xmshop/app/models/category_model_model.dart';
 import 'package:xmshop/app/models/plist_model.dart';
 import 'package:xmshop/app/models/shop.dart';
@@ -23,7 +22,6 @@ class HomeController extends GetxController {
   var sellingPist = <PlistItemModel>[].obs;
   var bestPlist = <PlistItemModel>[].obs;
   HttpClient httpsClient = HttpClient();
-
 
   @override
   void onInit() {
@@ -45,7 +43,6 @@ class HomeController extends GetxController {
 
     //获取热门商品
     getBestPlistData();
-    
   }
 
   void fromatJson() {
@@ -83,9 +80,7 @@ class HomeController extends GetxController {
 
   getFocusData() async {
     var response = await httpsClient.get("api/focus");
-    if(response!= null) {
-
-    }
+    if (response != null) {}
     var focus = FocusModel.fromJson(response.data);
     swiperlist.value = focus.result!;
     update();
@@ -93,44 +88,38 @@ class HomeController extends GetxController {
 
   getBsetSellingSwiperData() async {
     var response = await httpsClient.get("api/focus?position=2");
-    if(response!= null) {
-var sellingList = FocusModel.fromJson(response.data);
-    bestSellingSwipeList.value = sellingList.result!;
+    if (response != null) {
+      var sellingList = FocusModel.fromJson(response.data);
+      bestSellingSwipeList.value = sellingList.result!;
 
-    update();
+      update();
     }
-    
   }
 
   getCategoryData() async {
-    
     var response = await httpsClient.get("api/bestCate");
-    if(response!= null) {
-var catogry = CategoryModel.fromJson(response.data);
-    cartogoryList.value = catogry.result!;
-    update();
+    if (response != null) {
+      var catogry = CategoryModel.fromJson(response.data);
+      cartogoryList.value = catogry.result!;
+      update();
     }
-    
   }
 
   getHotPlistData() async {
     var response = await httpsClient.get("api/plist?is_hot=1");
-    if(response!= null) {
-var cellingPlist = PlistModel.fromJson(response.data);
-    sellingPist.value = cellingPlist.result!;
-    update();
+    if (response != null) {
+      var cellingPlist = PlistModel.fromJson(response.data);
+      sellingPist.value = cellingPlist.result!;
+      update();
     }
-    
   }
 
   getBestPlistData() async {
     var response = await httpsClient.get("api/plist?is_best=1");
-    if(response!= null) {
+    if (response != null) {
       var plist = PlistModel.fromJson(response.data);
-    bestPlist.value = plist.result!;
-    update();
+      bestPlist.value = plist.result!;
+      update();
     }
-    
   }
-
 }
