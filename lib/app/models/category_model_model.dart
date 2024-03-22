@@ -27,7 +27,7 @@ class CategoryItemModel {
   int? status;
   String? pic;
   String? pid;
-  int? sort;
+  Object? sort;
   int? isBest;
   int? goProduct;
   String? productId;

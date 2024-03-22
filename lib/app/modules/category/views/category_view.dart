@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/category_model_model.dart';
 import 'package:xmshop/app/services/keepAliveWrapper.dart';
 
 import '../controllers/category_controller.dart';
@@ -60,15 +61,18 @@ class CategoryView extends GetView<CategoryController> {
           SizedBox(
             width: ScreenAdapter.width(280),
             height: double.infinity,
-            child: ListView.builder(
-                itemCount: 20,
+            child: Obx(() => ListView.builder(
+                itemCount: controller.leftList.length,
                 itemBuilder: (context, index) {
+                   CategoryItemModel model =  controller.leftList[index];
                   return SizedBox(
                       width: double.infinity,
                       height: ScreenAdapter.height(180),
                       child: Obx(() => InkWell(
+                       
                             onTap: () {
-                              controller.selectIndex.value = index;
+                              // controller.selectIndex.value = index;
+                              controller.changeIndex(index);
                             },
                             child: Stack(
                               children: [
@@ -83,19 +87,19 @@ class CategoryView extends GetView<CategoryController> {
                                   ),
                                 ),
                                 Center(
-                                  child: Text("$index"),
+                                  child: Text(model.title!, style: TextStyle(fontWeight: controller.selectIndex == index ? FontWeight.bold : FontWeight.normal),),
                                 )
                               ],
                             ),
                           )));
-                }),
+                }),)
           ),
           Expanded(
               child: Container(
             height: double.infinity,
             // color: Colors.black,
-            child: GridView.builder(
-                itemCount: 35,
+            child: Obx(() => GridView.builder(
+                itemCount: controller.rightList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: ScreenAdapter.width(40),
@@ -103,21 +107,22 @@ class CategoryView extends GetView<CategoryController> {
                     childAspectRatio: 2/3
                     ),
                 itemBuilder: (context, index) {
+                  CategoryItemModel model =  controller.rightList[index];
                   return Column(
                     children: [
                       Container(
                         alignment: Alignment.center,
                         width: double.infinity,
                         child: Image.network(
-                          "https://xiaomi.itying.com/public/upload/RQXtJTh1WbzxpSbLF-vjDYTo.png",
+                          ScreenAdapter().getUrl(model.pic),
                           fit: BoxFit.fitHeight,
                         ),
                       ),
                       Padding(padding: EdgeInsets.only(top: ScreenAdapter.height(30)),
-                      child: Text("手机", style: TextStyle(fontSize: ScreenAdapter.fontSize(36)),),),
+                      child: Text(model.title!, style: TextStyle(fontSize: ScreenAdapter.fontSize(36)),),),
                     ],
                   );
-                }),
+                }),)
           ))
         ],
       ),
