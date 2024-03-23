@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import '../controllers/search_controller.dart';
 
 import '../../../services/screenAdapter.dart';
+import '../../../services/searchServices.dart';
+
 
 class SearchView extends GetView<SearchController1> {
   const SearchView({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class SearchView extends GetView<SearchController1> {
             borderRadius: BorderRadius.circular(30),
           ),
           child: TextField(
-            autofocus: true,
+            // autofocus: true,
             style: TextStyle(fontSize: ScreenAdapter.fontSize(36)),
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(0), //输入框居中
@@ -35,6 +37,10 @@ class SearchView extends GetView<SearchController1> {
             },
             onSubmitted: (value) {
               controller.keywords = value;
+
+              //保存搜索记录
+              SearchServices.setHistoryData(value);
+
               // Get.toNamed("/product-list", arguments: {"keywords": controller.keywords});
               // 替换路由
               Get.offAndToNamed("/product-list", arguments: {"keywords": controller.keywords});
@@ -47,7 +53,9 @@ class SearchView extends GetView<SearchController1> {
       actions: [
         TextButton(
             onPressed: () {
-              // print("搜索");
+
+              //保存搜索记录
+              SearchServices.setHistoryData(controller.keywords);
               // Get.toNamed("/product-list", arguments: {"keywords": controller.keywords});
                Get.offAndToNamed("/product-list", arguments: {"keywords": controller.keywords});
             },
@@ -67,7 +75,7 @@ class SearchView extends GetView<SearchController1> {
       appBar: _appBar(),
       body:
           ListView(padding: EdgeInsets.all(ScreenAdapter.width(20)), children: [
-        Row(
+        Obx(() => controller.histroyList.isNotEmpty ? Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
@@ -80,13 +88,90 @@ class SearchView extends GetView<SearchController1> {
               ),
             ),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.bottomSheet(Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(ScreenAdapter.width(20)),
+                width: ScreenAdapter.width(1080),
+                height: ScreenAdapter.width(460),
+                child: Column(children: [
+                  const SizedBox(height: 20,),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Text("您确定要清空历史记录吗"),
+                  ],),
+                  const SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                    
+                    ElevatedButton(
+                      
+                      onPressed: (){
+                      Get.back();
+                    }, child: const Text("取消")),
+                    
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                         foregroundColor: MaterialStateProperty.all(Colors.white),
+                      ),
+                      onPressed: (){
+                      controller.clearHistoryData();
+                      Get.back();
+                    }, child: const Text("确定")),
+                  ],),
+                ]),
+              ));
+
+                },
                 icon: const Icon(Icons.delete_forever_outlined)),
           ],
-        ),
-        Wrap(
-          children: List.filled(6, "shouji").map((e) {
-            return Container(
+        ) : const Text("")),
+        Obx(() => Wrap(
+          children: controller.histroyList.map((e) {
+            return GestureDetector(
+              onLongPress: () {
+                
+                Get.bottomSheet(Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(ScreenAdapter.width(20)),
+                width: ScreenAdapter.width(1080),
+                height: ScreenAdapter.width(460),
+                child: Column(children: [
+                  const SizedBox(height: 20,),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Text("您确定删除这个记录吗"),
+                  ],),
+                  const SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                    
+                    ElevatedButton(
+                      
+                      onPressed: (){
+                      Get.back();
+                    }, child: const Text("取消")),
+                    
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                         foregroundColor: MaterialStateProperty.all(Colors.white),
+                      ),
+                      onPressed: (){
+                      controller.clearHistoryData();
+                      Get.back();
+                    }, child: const Text("确定")),
+                  ],),
+                ]),
+              ));
+
+              },
+              child: Container(
               padding: EdgeInsets.all(ScreenAdapter.width(20)),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8), color: Colors.white),
@@ -96,9 +181,10 @@ class SearchView extends GetView<SearchController1> {
                   ScreenAdapter.width(30),
                   ScreenAdapter.width(20)),
               child: Text(e),
+            ),
             );
           }).toList(),
-        ),
+        )),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,7 +198,9 @@ class SearchView extends GetView<SearchController1> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.refresh)),
+            IconButton(onPressed: () {
+              
+            }, icon: const Icon(Icons.refresh)),
           ],
         ),
         Wrap(
