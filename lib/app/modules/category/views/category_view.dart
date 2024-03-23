@@ -14,7 +14,9 @@ class CategoryView extends GetView<CategoryController> {
 
   AppBar _appBar() {
     return AppBar(
-      title: Container(
+      title: InkWell(onTap: () {
+        Get.toNamed("/search");
+      },child: Container(
         width: ScreenAdapter.width(840),
         height: ScreenAdapter.height(96),
         decoration: BoxDecoration(
@@ -35,7 +37,7 @@ class CategoryView extends GetView<CategoryController> {
                 color: Colors.black45, fontSize: ScreenAdapter.fontSize(32)),
           ),
         ]),
-      ),
+      ),),
       centerTitle: true,
       backgroundColor: Colors.white,
       elevation: 0,

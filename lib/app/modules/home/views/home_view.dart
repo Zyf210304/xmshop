@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -31,32 +30,38 @@ class HomeView extends GetView<HomeController> {
                         ? Colors.black45
                         : Colors.white),
             leadingWidth: controller.flag.value ? 0 : ScreenAdapter.width(140),
-            title: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              width: controller.flag.value
-                  ? ScreenAdapter.width(800)
-                  : ScreenAdapter.width(620),
-              height: ScreenAdapter.height(96),
-              decoration: BoxDecoration(
-                color: const  Color.fromRGBO(246, 246, 246, 1),
-                borderRadius: BorderRadius.circular(30),
+            title: InkWell(
+              onTap: () {
+                Get.toNamed("/search");
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: controller.flag.value
+                    ? ScreenAdapter.width(800)
+                    : ScreenAdapter.width(620),
+                height: ScreenAdapter.height(96),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(246, 246, 246, 1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 4, 0),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.black45,
+                        ),
+                      ),
+                      Text(
+                        "手机",
+                        style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: ScreenAdapter.fontSize(32)),
+                      ),
+                    ]),
               ),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 4, 0),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.black45,
-                  ),
-                ),
-                Text(
-                  "手机",
-                  style: TextStyle(
-                      color: Colors.black45,
-                      fontSize: ScreenAdapter.fontSize(32)),
-                ),
-              ]),
             ),
             centerTitle: true,
             backgroundColor: controller.flag.value == true
@@ -127,16 +132,17 @@ class HomeView extends GetView<HomeController> {
     return SizedBox(
         // padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         width: ScreenAdapter.width(1080),
-        height: ScreenAdapter.height(500),
+        height: ScreenAdapter.height(520),
         // color: Colors.yellow,
         child: Obx(
           () => Swiper(
-            itemCount: (controller.cartogoryList.length / 10).toInt(),
+            itemCount: controller.cartogoryList.length ~/ 10,
             itemBuilder: (context, index) {
               return GridView.builder(
                   itemCount: 10,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5,
+                    childAspectRatio: 0.8,
                     crossAxisSpacing: ScreenAdapter.width(20),
                     mainAxisSpacing: ScreenAdapter.height(20),
                   ),
@@ -154,7 +160,7 @@ class HomeView extends GetView<HomeController> {
                             fit: BoxFit.fitHeight,
                           ),
                         ),
-                        Padding(
+                        Container(
                             padding:
                                 EdgeInsets.only(top: ScreenAdapter.width(5)),
                             child: Text(
@@ -367,57 +373,71 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
         Container(
-          color: const Color.fromRGBO(246, 246, 246, 1),
-          padding:  EdgeInsets.all(ScreenAdapter.width(20)),
-          child: Obx(() => MasonryGridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: ScreenAdapter.width(20),
-            crossAxisSpacing: ScreenAdapter.width(20),
-            itemCount: controller.bestPlist.length,
-            shrinkWrap: true,  //收缩 让元素宽度自适应
-            physics: const NeverScrollableScrollPhysics(),  //禁止左右滑动
-            itemBuilder: (context, index) {
-              PlistItemModel model = controller.bestPlist[index];
-                String picUrl = "https://miapp.itying.com/${model.pic}";
-                
+            color: const Color.fromRGBO(246, 246, 246, 1),
+            padding: EdgeInsets.all(ScreenAdapter.width(20)),
+            child: Obx(
+              () => MasonryGridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: ScreenAdapter.width(20),
+                crossAxisSpacing: ScreenAdapter.width(20),
+                itemCount: controller.bestPlist.length,
+                shrinkWrap: true, //收缩 让元素宽度自适应
+                physics: const NeverScrollableScrollPhysics(), //禁止左右滑动
+                itemBuilder: (context, index) {
+                  PlistItemModel model = controller.bestPlist[index];
+                  String picUrl = "https://miapp.itying.com/${model.pic}";
 
-              return Container(
-                
-                // height: ScreenAdapter.height(100 + 150 *Random().nextDouble()),
-                // color: Colors.red,
-                padding: EdgeInsets.all(ScreenAdapter.width(20)),
-                decoration: BoxDecoration(
-                  // border: Border.all(color: Colors.yellow, width: 1,),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white 
-                ),
-                child: Column(
-                  children: [ 
-                    Container(
-                      child: Image.network(picUrl.replaceAll("\\", "/"),fit: BoxFit.cover,),
-                      
+                  return Container(
+                    // height: ScreenAdapter.height(100 + 150 *Random().nextDouble()),
+                    // color: Colors.red,
+                    padding: EdgeInsets.all(ScreenAdapter.width(20)),
+                    decoration: BoxDecoration(
+                        // border: Border.all(color: Colors.yellow, width: 1,),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Image.network(
+                            picUrl.replaceAll("\\", "/"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(ScreenAdapter.width(10)),
+                          width: double.infinity,
+                          child: Text(
+                            model.title!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenAdapter.fontSize(36)),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(ScreenAdapter.width(10)),
+                          width: double.infinity,
+                          child: Text(
+                            model.subTitle!,
+                            style:
+                                TextStyle(fontSize: ScreenAdapter.fontSize(32)),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(ScreenAdapter.width(10)),
+                          width: double.infinity,
+                          child: Text(
+                            "￥${model.price}",
+                            style: TextStyle(
+                                fontSize: ScreenAdapter.fontSize(34),
+                                color: Colors.red),
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(ScreenAdapter.width(10)),
-                      width: double.infinity,
-                      child: Text(model.title!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: ScreenAdapter.fontSize(36)),),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(ScreenAdapter.width(10)),
-                      width: double.infinity,
-                      child: Text(model.subTitle!, style: TextStyle(fontSize: ScreenAdapter.fontSize(32)),),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(ScreenAdapter.width(10)),
-                      width: double.infinity,
-                      child: Text("￥${model.price}", style: TextStyle(fontSize: ScreenAdapter.fontSize(34),color: Colors.red), ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),)
-        )
+                  );
+                },
+              ),
+            ))
       ],
     );
   }
