@@ -30,6 +30,16 @@ class SearchView extends GetView<SearchController1> {
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 )),
+            onChanged: (value){
+              controller.keywords = value;
+            },
+            onSubmitted: (value) {
+              controller.keywords = value;
+              // Get.toNamed("/product-list", arguments: {"keywords": controller.keywords});
+              // 替换路由
+              Get.offAndToNamed("/product-list", arguments: {"keywords": controller.keywords});
+
+            }, 
           )),
       centerTitle: true,
       backgroundColor: Colors.white,
@@ -37,7 +47,9 @@ class SearchView extends GetView<SearchController1> {
       actions: [
         TextButton(
             onPressed: () {
-              print("搜索");
+              // print("搜索");
+              // Get.toNamed("/product-list", arguments: {"keywords": controller.keywords});
+               Get.offAndToNamed("/product-list", arguments: {"keywords": controller.keywords});
             },
             child: Text(
               "搜索",
@@ -162,21 +174,18 @@ class SearchView extends GetView<SearchController1> {
                             child: Container(
                           padding: EdgeInsets.all(ScreenAdapter.width(10)),
                           child: RichText(
-                              text: const TextSpan(
+                              text: TextSpan(
                                   text: "K50 至尊版 骄龙8+ 牛逼  ",
                                   style: TextStyle(color: Colors.black54),
                                   children: [
-                                    TextSpan(
-                                      text: " 热 ",
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          // backgroundColor: Colors.green,
-                                          // decorationStyle: TextDecorationStyle.wavy
-                                            
-
-                                      )
-                                    )
-                                  ])),
+                                WidgetSpan(
+                                    child: Image.network(
+                                  "https://ts1.cn.mm.bing.net/th/id/R-C.5a5b0c06fd29a679b417d82c26e7a357?rik=wH6RxFCYJnyVGA&riu=http%3a%2f%2fn.sinaimg.cn%2fsinacn20114%2f0%2fw400h400%2f20190314%2fe4f6-hufnxfn3145340.jpg&ehk=SVMJ0At9G9Ml3451tQhy9nbsnj6rbobvxyrKkN0MvBk%3d&risl=&pid=ImgRaw&r=0",
+                                  fit: BoxFit.cover,
+                                  width: 20,
+                                  height: 20,
+                                ))
+                              ])),
                         ))
                       ],
                     );

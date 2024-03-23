@@ -12,8 +12,8 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  // static const INITIAL = Routes.TABS;
-  static const INITIAL = Routes.SEARCH;
+  static const INITIAL = Routes.TABS;
+  // static const INITIAL = Routes.SEARCH;
 
   static final routes = [
     GetPage(
@@ -27,6 +27,8 @@ class AppPages {
       binding: ProductListBinding(),
     ),
     GetPage(
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 100),
       name: _Paths.SEARCH,
       page: () => const SearchView(),
       binding: SearchBinding(),

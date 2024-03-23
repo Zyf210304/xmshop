@@ -21,6 +21,12 @@ class ProductListController extends GetxController {
   bool flag = true;
   var haseData = true.obs;
   String sort = "";
+  
+
+  //获取传值
+  String? keywords = Get.arguments["keywords"];
+  String? cid =  Get.arguments["cid"];
+  String apiUri = "";
 
   /*二级导航数据*/
   List subHeaderList = [
@@ -98,9 +104,14 @@ class ProductListController extends GetxController {
 
   void getPlistData() async {
     if (flag && haseData.value) {
+
+      if(cid != null) {
+        apiUri =  "api/plist?cid=${Get.arguments["cid"]}&page=$page&pageSize=$pageSize&sort=$sort";
+      }  else {
+        apiUri = "api/plist?search=${Get.arguments["keywords"]}&page=$page&pageSize=$pageSize&sort=$sort";;
+      }
       flag = false;
-      var response = await httpsClient.get(
-          "api/plist?cid=${Get.arguments["cid"]}&page=$page&pageSize=$pageSize&sort=$sort");
+      var response = await httpsClient.get(apiUri);
 
       if (response != null) {
         var data = PlistModel.fromJson(response.data);

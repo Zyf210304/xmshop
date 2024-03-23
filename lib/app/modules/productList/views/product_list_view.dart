@@ -11,7 +11,8 @@ class ProductListView extends GetView<ProductListController> {
   const ProductListView({Key? key}) : super(key: key);
 
   Widget _subHeaderWidget() {
-    return Positioned(
+    return Obx(() {
+      return controller.plist.length == 0 ? Text("") : Positioned(
         left: 0,
         right: 0,
         top: 0,
@@ -53,6 +54,7 @@ class ProductListView extends GetView<ProductListController> {
             }).toList()
           ),
         )));
+    });
   }
 
   Widget _showIcon(id) {
@@ -77,7 +79,8 @@ class ProductListView extends GetView<ProductListController> {
           borderRadius: BorderRadius.circular(30),
         ),
         
-        child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        child: InkWell(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           const Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 4, 0),
             child: Icon(
@@ -86,11 +89,15 @@ class ProductListView extends GetView<ProductListController> {
             ),
           ),
           Text(
-            "手机",
+           controller.keywords??"",
             style: TextStyle(
                 color: Colors.black45, fontSize: ScreenAdapter.fontSize(32)),
           ),
         ]),
+        onTap: () {
+          Get.offAndToNamed("/search");
+        },
+        )
         
       ),
       centerTitle: true,
@@ -286,6 +293,7 @@ class ProductListView extends GetView<ProductListController> {
             margin: EdgeInsets.only(top: ScreenAdapter.width(125)),
             child: _listView(),
           ),
+          
           _subHeaderWidget(),
         ],
       ),
