@@ -51,10 +51,10 @@ class ProductContentController extends GetxController {
       if (scrollController.position.pixels <= 100) {
         opacity.value =  (scrollController.position.pixels > 0 ? scrollController.offset : 0) / 100;
         if (showTabs.value == true) {
-          print("--------- 显示tab");
+          // print("--------- 显示tab");
           showTabs.value = false;
         }
-        print("------${opacity.value}-------- ${scrollController.offset}");
+        // print("------${opacity.value}-------- ${scrollController.offset}");
         update();
       } else {
         if (opacity.value < 1) {

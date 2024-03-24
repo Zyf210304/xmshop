@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../controllers/product_content_controller.dart';
 import '../../../services/screenAdapter.dart';
@@ -8,7 +9,7 @@ import '../../../services/screenAdapter.dart';
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
 
-  PreferredSize _appBar() {
+  PreferredSize _appBar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size(ScreenAdapter.width(1080), ScreenAdapter.height(120)),
       child: Obx(
@@ -30,17 +31,25 @@ class ProductContentView extends GetView<ProductContentController> {
 
                               //跳转到指定的容器
                               if (entrie.key == 0) {
-                                Scrollable.ensureVisible(controller
-                                    .globalKey1.currentContext as BuildContext, duration: const Duration(milliseconds: 1000));
-                                    
+                                Scrollable.ensureVisible(
+                                    controller.globalKey1.currentContext
+                                        as BuildContext,
+                                    duration:
+                                        const Duration(milliseconds: 1000));
                               }
                               if (entrie.key == 1) {
-                                Scrollable.ensureVisible(controller
-                                    .globalKey2.currentContext as BuildContext, duration: const Duration(milliseconds: 1000));
+                                Scrollable.ensureVisible(
+                                    controller.globalKey2.currentContext
+                                        as BuildContext,
+                                    duration:
+                                        const Duration(milliseconds: 1000));
                               }
                               if (entrie.key == 2) {
-                                Scrollable.ensureVisible(controller
-                                    .globalKey3.currentContext as BuildContext, duration: const Duration(milliseconds: 1000));
+                                Scrollable.ensureVisible(
+                                    controller.globalKey3.currentContext
+                                        as BuildContext,
+                                    duration:
+                                        const Duration(milliseconds: 1000));
                               }
                             },
                             child: Column(
@@ -114,7 +123,57 @@ class ProductContentView extends GetView<ProductContentController> {
               width: ScreenAdapter.width(90),
               height: ScreenAdapter.width(90),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showMenu(
+                      color: Colors.black87.withOpacity(0.7),
+                      context: context,
+                      position: RelativeRect.fromLTRB(
+                          ScreenAdapter.width(600),
+                          ScreenAdapter.width(240),
+                          ScreenAdapter.width(20),
+                          ScreenAdapter.width(0)),
+                      items: [
+                        const PopupMenuItem(
+                            child: Row(
+                          children: [
+                            Icon(
+                              Icons.home,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "首页",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        )),
+                        const PopupMenuItem(
+                            child: Row(
+                          children: [
+                            Icon(
+                              Icons.message,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "消息",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        )),
+                        const PopupMenuItem(
+                            child: Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "收藏",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ))
+                      ]);
+                },
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(EdgeInsets.zero),
                     backgroundColor: MaterialStateProperty.all(Colors.grey),
@@ -134,40 +193,118 @@ class ProductContentView extends GetView<ProductContentController> {
     );
   }
 
+  Widget _body() {
+    return SingleChildScrollView(
+      controller: controller.scrollController,
+      child: Column(
+        children: [
+          Container(
+            key: controller.globalKey1,
+            width: ScreenAdapter.width(1080),
+            height: ScreenAdapter.width(1600),
+            color: Colors.red,
+            child: Text("商品\n1\n2\n3\n1\n2\n3"),
+          ),
+          Container(
+            key: controller.globalKey2,
+            width: ScreenAdapter.width(1080),
+            height: ScreenAdapter.width(1900),
+            color: Colors.yellow,
+            child: Text("详情\n1\n2\n3\n1\n2\n3"),
+          ),
+          Container(
+            key: controller.globalKey3,
+            width: ScreenAdapter.width(1080),
+            height: ScreenAdapter.width(2400),
+            color: Colors.blue,
+            child: Text("推荐\n1\n2\n3\n1\n2\n3"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _bottom(BuildContext context) {
+    return Positioned(
+        left: 0,
+        right: 0,
+        bottom: context.bottomBarHeight(),
+        child: Container(
+          height: ScreenAdapter.width(160),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                  top: BorderSide(
+                      width: ScreenAdapter.width(2), color: Colors.black45))),
+          child: Row(
+            children: [
+              SizedBox(
+                width: ScreenAdapter.width(200),
+                height: ScreenAdapter.width(160),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.shopping_cart),
+                    Text("购物车"),
+                  ],
+                ),
+              ),
+              
+              
+
+              Expanded(
+                flex: 1,
+                  child: Container(
+                    // margin: const EdgeInsets.only( right :20),
+                      child: ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                   shape: MaterialStateProperty.all(
+                    // BeveledRectangleBorder()
+                    const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.horizontal(left: Radius.circular(20), right: Radius.circular(0))
+                    )
+                  )
+                ),
+                child: const Text("加入购物车"),
+              ))),
+              Expanded(
+                flex: 1,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 20),
+                      child: ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red[400]),
+                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all(
+                    // BeveledRectangleBorder()
+                    const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.horizontal(left: Radius.circular(0), right: Radius.circular(100))
+                    )
+                  )
+                ),
+                child: const Text("立即购买"),
+              ))),
+            ],
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //让body内容扩展到 appbar 下面
       extendBodyBehindAppBar: true,
 
-      appBar: _appBar(),
-      body: SingleChildScrollView(
-        controller: controller.scrollController,
-        child: Column(
-          children: [
-            Container(
-              key: controller.globalKey1,
-              width: ScreenAdapter.width(1080),
-              height: ScreenAdapter.width(1600),
-              color: Colors.red,
-              child: Text("商品\n1\n2\n3\n1\n2\n3"),
-            ),
-            Container(
-              key: controller.globalKey2,
-              width: ScreenAdapter.width(1080),
-              height: ScreenAdapter.width(1900),
-              color: Colors.yellow,
-              child: Text("详情\n1\n2\n3\n1\n2\n3"),
-            ),
-            Container(
-              key: controller.globalKey3,
-              width: ScreenAdapter.width(1080),
-              height: ScreenAdapter.width(2400),
-              color: Colors.blue,
-              child: Text("推荐\n1\n2\n3\n1\n2\n3"),
-            ),
-          ],
-        ),
+      appBar: _appBar(context),
+      body: Stack(
+        children: [
+          _body(),
+          _bottom(context),
+        ],
       ),
     );
   }

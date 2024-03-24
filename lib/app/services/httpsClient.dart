@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 
 class HttpClient {
   static String domain = "https://miapp.itying.com/";
@@ -26,6 +27,20 @@ class HttpClient {
     String tempUrl = domain+picUrl;
     return tempUrl.replaceAll("\\", "/");
   }
+}
 
+extension screenAbout on BuildContext {
+
+  double bottomBarHeight() {
+    
+    MediaQueryData mq = MediaQuery.of(this);
+    return mq.padding.bottom;
+  }
+
+  double statusBarHeight() {
+    
+    MediaQueryData mq = MediaQuery.of(this);
+    return mq.padding.top;
+  }
 
 }
