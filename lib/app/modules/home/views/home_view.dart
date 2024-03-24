@@ -387,7 +387,11 @@ class HomeView extends GetView<HomeController> {
                   PlistItemModel model = controller.bestPlist[index];
                   String picUrl = "https://miapp.itying.com/${model.pic}";
 
-                  return Container(
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed("/product-content", arguments: {"id": model.sId});
+                    },
+                    child:  Container(
                     // height: ScreenAdapter.height(100 + 150 *Random().nextDouble()),
                     // color: Colors.red,
                     padding: EdgeInsets.all(ScreenAdapter.width(20)),
@@ -434,7 +438,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ],
                     ),
-                  );
+                  ),);
                 },
               ),
             ))
