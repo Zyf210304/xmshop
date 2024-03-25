@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../models/pcount_model.dart';
+import '../../../services/httpsClient.dart';
 
 class ProductContentController extends GetxController {
   //TODO: Implement ProductContentController
@@ -11,6 +13,10 @@ class ProductContentController extends GetxController {
   GlobalKey globalKey1 = GlobalKey();
   GlobalKey globalKey2 = GlobalKey();
   GlobalKey globalKey3 = GlobalKey();
+  HttpClient httpsClient = HttpClient();
+
+  //数据
+   var pcontent =PcountItemModel().obs;
 
   //导航栏背景透明度
   var opacity = 0.0.obs;
@@ -25,7 +31,12 @@ class ProductContentController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     addScrollControllerListener();
+
+    //获取商品详情数据
+    getPcontenttData();
+
   }
 
   @override
@@ -74,5 +85,18 @@ class ProductContentController extends GetxController {
     update();
   }
 
+  getPcontenttData() async {
+    var response = await httpsClient.get("api/pcontent?id=${Get.arguments["id"]}");
+    if (response != null) {
+      var tempData = PcountModel.fromJson(response.data);
+      pcontent.value = tempData.result!;
+      update();
+    }
+  }
+
+  // api/pcontent?id=59f6a2d27ac40b223cfdcf81
+
   
 }
+
+

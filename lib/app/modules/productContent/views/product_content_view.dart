@@ -5,9 +5,56 @@ import 'package:xmshop/app/services/httpsClient.dart';
 
 import '../controllers/product_content_controller.dart';
 import '../../../services/screenAdapter.dart';
+import './first_page_view_view.dart';
+import './second_page_view_view.dart';
+import './third_page_view_view.dart';
 
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
+
+  showBottomAttr() {
+    Get.bottomSheet(Container(
+      padding: EdgeInsets.all(ScreenAdapter.width(20)),
+      color: Colors.white,
+      width: double.infinity,
+      height: ScreenAdapter.height(1200),
+      child: ListView(
+        children: controller.pcontent.value.attr!.map((e) {
+          return Wrap(
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                    top: ScreenAdapter.width(20),
+                    left: ScreenAdapter.width(20)),
+                width: ScreenAdapter.width(1040),
+                child: Text(
+                  "${e.cate}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                width: ScreenAdapter.width(1040),
+                child: Wrap(
+                  children: e.list!.map((value) {
+                    print(value);
+                  return Container(
+                      margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
+                      child:  Chip(
+                          padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                          shape: StadiumBorder(),
+                          side: BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          backgroundColor: Color.fromARGB(31, 233, 213, 213),
+                          label: Text(value)));
+                }).toList()),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    ));
+  }
 
   PreferredSize _appBar(BuildContext context) {
     return PreferredSize(
@@ -89,7 +136,9 @@ class ProductContentView extends GetView<ProductContentController> {
                 width: ScreenAdapter.width(90),
                 height: ScreenAdapter.width(90),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(EdgeInsets.zero),
                       backgroundColor: MaterialStateProperty.all(Colors.grey),
@@ -198,27 +247,9 @@ class ProductContentView extends GetView<ProductContentController> {
       controller: controller.scrollController,
       child: Column(
         children: [
-          Container(
-            key: controller.globalKey1,
-            width: ScreenAdapter.width(1080),
-            height: ScreenAdapter.width(1600),
-            color: Colors.red,
-            child: Text("商品\n1\n2\n3\n1\n2\n3"),
-          ),
-          Container(
-            key: controller.globalKey2,
-            width: ScreenAdapter.width(1080),
-            height: ScreenAdapter.width(1900),
-            color: Colors.yellow,
-            child: Text("详情\n1\n2\n3\n1\n2\n3"),
-          ),
-          Container(
-            key: controller.globalKey3,
-            width: ScreenAdapter.width(1080),
-            height: ScreenAdapter.width(2400),
-            color: Colors.blue,
-            child: Text("推荐\n1\n2\n3\n1\n2\n3"),
-          ),
+          FirstPageViewView(showBottomAttr),
+          SecondPageViewView(),
+          ThirdPageViewView(),
         ],
       ),
     );
@@ -228,68 +259,80 @@ class ProductContentView extends GetView<ProductContentController> {
     return Positioned(
         left: 0,
         right: 0,
-        bottom: context.bottomBarHeight(),
-        child: Container(
-          height: ScreenAdapter.width(160),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                  top: BorderSide(
-                      width: ScreenAdapter.width(2), color: Colors.black45))),
-          child: Row(
-            children: [
-              SizedBox(
-                width: ScreenAdapter.width(200),
-                height: ScreenAdapter.width(160),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.shopping_cart),
-                    Text("购物车"),
-                  ],
-                ),
+        bottom: 0,
+        child: Column(
+          children: [
+            Container(
+              height: ScreenAdapter.width(160),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      top: BorderSide(
+                          width: ScreenAdapter.width(2),
+                          color: Colors.black45))),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: ScreenAdapter.width(200),
+                    height: ScreenAdapter.width(160),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.shopping_cart),
+                        Text("购物车"),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          // margin: const EdgeInsets.only( right :20),
+                          child: ElevatedButton(
+                        onPressed: () {
+                          showBottomAttr();
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.yellow),
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all(
+                                // BeveledRectangleBorder()
+                                const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(20),
+                                        right: Radius.circular(0))))),
+                        child: const Text("加入购物车"),
+                      ))),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showBottomAttr();
+                            },
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red[400]),
+                                foregroundColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                shape: MaterialStateProperty.all(
+                                    // BeveledRectangleBorder()
+                                    const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                            left: Radius.circular(0),
+                                            right: Radius.circular(100))))),
+                            child: const Text("立即购买"),
+                          ))),
+                ],
               ),
-              
-              
-
-              Expanded(
-                flex: 1,
-                  child: Container(
-                    // margin: const EdgeInsets.only( right :20),
-                      child: ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.yellow),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                   shape: MaterialStateProperty.all(
-                    // BeveledRectangleBorder()
-                    const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(left: Radius.circular(20), right: Radius.circular(0))
-                    )
-                  )
-                ),
-                child: const Text("加入购物车"),
-              ))),
-              Expanded(
-                flex: 1,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 20),
-                      child: ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red[400]),
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                  shape: MaterialStateProperty.all(
-                    // BeveledRectangleBorder()
-                    const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(left: Radius.circular(0), right: Radius.circular(100))
-                    )
-                  )
-                ),
-                child: const Text("立即购买"),
-              ))),
-            ],
-          ),
+            ),
+            Container(
+              height: context.bottomBarHeight(),
+              color: Colors.white,
+            )
+          ],
         ));
   }
 
