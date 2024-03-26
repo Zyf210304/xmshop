@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ import './third_page_view_view.dart';
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
 
+  
   showBottomAttr() {
     Get.bottomSheet(GetBuilder<ProductContentController>(
         init: controller,
@@ -78,14 +81,31 @@ class ProductContentView extends GetView<ProductContentController> {
     return Container(
       alignment: Alignment.center,
       color: Colors.white,
-       child: Column(
+      child: Column(
         children: [
           Row(
-            children: [ 
-              Expanded(child: Container(height: ScreenAdapter.height(120), alignment: Alignment.center, child: const Text("商品介绍", style: TextStyle(color: Colors.red),),)),
-              Expanded(child: Container(height: ScreenAdapter.height(120), alignment: Alignment.center, child: const Text("规格参数",),))
-            ],
-          )
+              children: controller.subTabsList
+                  .map((element) => Obx(() => Expanded(
+                        child: InkWell(
+                            onTap: () {
+                              controller
+                                  .changeSubTabsSelectIndex(element["id"]);
+                            },
+                            child: Container(
+                              height: ScreenAdapter.height(120),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "${element["title"]}",
+                                style: TextStyle(
+                                    color: element["id"] ==
+                                            controller
+                                                .selectedSubTitleIndex.value
+                                        ? Colors.red
+                                        : Colors.black38),
+                              ),
+                            )),
+                      )))
+                  .toList())
         ],
       ),
     );
@@ -117,21 +137,36 @@ class ProductContentView extends GetView<ProductContentController> {
                                     controller.globalKey1.currentContext
                                         as BuildContext,
                                     duration:
-                                        const Duration(milliseconds: 1000));
+                                        const Duration(milliseconds: 500));
                               }
                               if (entrie.key == 1) {
                                 Scrollable.ensureVisible(
                                     controller.globalKey2.currentContext
                                         as BuildContext,
                                     duration:
-                                        const Duration(milliseconds: 1000));
+                                        const Duration(milliseconds: 500));
+
+                                //修正时间
+                                Timer myTimer = Timer(const Duration(milliseconds: 501), () { 
+                                  controller.scrollController.jumpTo(
+                                      controller.scrollController.offset -
+                                          ScreenAdapter.height(120)- ScreenAdapter.getstatusBarHeigh());
+                                });
+                                
                               }
                               if (entrie.key == 2) {
                                 Scrollable.ensureVisible(
                                     controller.globalKey3.currentContext
                                         as BuildContext,
                                     duration:
-                                        const Duration(milliseconds: 1000));
+                                        const Duration(milliseconds: 500));
+
+                                 Timer myTimer = Timer(const Duration(milliseconds: 501), () { 
+                                  controller.scrollController.jumpTo(
+                                      controller.scrollController.offset -
+                                          ScreenAdapter.height(120) - ScreenAdapter.getstatusBarHeigh());
+                                });
+                            
                               }
                             },
                             child: Column(
@@ -382,13 +417,19 @@ class ProductContentView extends GetView<ProductContentController> {
         children: [
           _body(),
           _bottom(context),
-          Obx(() => controller.showSubHeaderTabs.value == true ? Positioned(
-            top: ScreenAdapter.getstatusBarHeigh() + ScreenAdapter.height(120),
-            left: 0,
-            right: 0,
-            child:  _subHeader(),) : Text(""))
+          Obx(() => controller.showSubHeaderTabs.value == true
+              ? Positioned(
+                  top: ScreenAdapter.getstatusBarHeigh() +
+                      ScreenAdapter.height(120),
+                  left: 0,
+                  right: 0,
+                  child: _subHeader(),
+                )
+              : Text(""))
         ],
       ),
     );
   }
+
+  
 }

@@ -36,8 +36,16 @@ class ProductContentController extends GetxController {
   var gk2postion = 0.0;
   var gk3postion = 0.0;
 
-  //判断首页是否显示状态栏
+  //判断首页是否显示浮动导航
   var showSubHeaderTabs = false.obs;
+  var needRefreshSubTabsHeight = true;
+  //浮动导航菜单
+  List<Map> subTabsList = [
+    {"id": 1, "title": "商品介绍"},
+    {"id": 2, "title": "规格参数"},
+  ];
+  //浮动显示导航选中位置
+  var selectedSubTitleIndex = 1.obs;
 
   @override
   void onInit() {
@@ -62,20 +70,33 @@ class ProductContentController extends GetxController {
   void addScrollControllerListener() {
     scrollController.addListener(() {
       //获取元素位置位置
-      if (gk2postion == 0) {
+      if (gk2postion == 0 || needRefreshSubTabsHeight) {
         getContainerPosition(scrollController.offset);
+        needRefreshSubTabsHeight = false;
       }
 
       //显示隐藏 详情切换
       if (scrollController.offset > gk2postion &&
           scrollController.offset < gk3postion) {
+        
         if (showSubHeaderTabs.value == false) {
           showSubHeaderTabs.value = true;
+          selectTasIndex.value = 1;
+          print("----------1");
           update();
         }
-      } else {
+      } else if (scrollController.offset < gk2postion) {
         if (showSubHeaderTabs.value == true) {
           showSubHeaderTabs.value = false;
+          selectTasIndex.value = 0;
+          print("----------0");
+          update();
+        }
+      } else if(scrollController.offset > gk3postion) {
+        if (showSubHeaderTabs.value == true) {
+          showSubHeaderTabs.value = false;
+          selectTasIndex.value = 2;
+          print("----------2");
           update();
         }
       }
@@ -105,9 +126,9 @@ class ProductContentController extends GetxController {
 
   //获取元素的位置  globalKey3.currentContext!.findRenderObject()  可以获取渲染属性 要在渲染完成获取  获取渲染的高度是距离顶部的高度
   getContainerPosition(height) {
-
     //获取渲染的高度是距离顶部的高度  还要控制 顶部高度
-    var needChangeHeight =  height - (ScreenAdapter.getstatusBarHeigh() + ScreenAdapter.height(120));
+    var needChangeHeight = height -
+        (ScreenAdapter.getstatusBarHeigh() + ScreenAdapter.height(120));
 
     RenderBox box2 = globalKey2.currentContext!.findRenderObject() as RenderBox;
     gk2postion = box2.localToGlobal(Offset.zero).dy + needChangeHeight;
@@ -155,8 +176,16 @@ class ProductContentController extends GetxController {
       Map map = model.attrList![i];
       map["checked"] = i == valueIndex;
     }
-
+    needRefreshSubTabsHeight = true;
     print(model.attrList);
+    update();
+  }
+
+  // 切换顶部浮动导航位置
+  changeSubTabsSelectIndex(index) {
+    selectedSubTitleIndex.value = index;
+    needRefreshSubTabsHeight = true;
+    scrollController.jumpTo(gk2postion);
     update();
   }
 }
