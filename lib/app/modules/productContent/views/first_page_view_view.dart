@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
 import '../controllers/product_content_controller.dart';
 import '../../../services/screenAdapter.dart';
-import '../../../services/httpsClient.dart';
 
 
+
+// ignore: must_be_immutable
 class FirstPageViewView extends GetView {
   @override
   ProductContentController controller = Get.find();
@@ -20,9 +21,6 @@ class FirstPageViewView extends GetView {
     return Obx(() => controller.pcontent.value.sId  == null ?  SizedBox(height: ScreenAdapter.height(1200), child: const Center(child: CircularProgressIndicator()),) : Container(
           padding: EdgeInsets.all(ScreenAdapter.width(20)),
           key: controller.globalKey1,
-          // width: ScreenAdapter.width(1080),
-          // height: ScreenAdapter.width(1600),
-          // color: Colors.red,
           child: Column(
             children: [
               //图片

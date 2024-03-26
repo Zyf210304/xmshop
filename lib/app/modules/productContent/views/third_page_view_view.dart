@@ -13,7 +13,7 @@ class ThirdPageViewView extends GetView {
     return Container(
       key: controller.globalKey3,
       width: ScreenAdapter.width(1080),
-      height: ScreenAdapter.width(2400),
+      height: ScreenAdapter.width(3400),
       color: Colors.blue,
       child: Text("推荐\n1\n2\n3\n1\n2\n3"),
     );

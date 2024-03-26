@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,47 +14,81 @@ class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
 
   showBottomAttr() {
-    Get.bottomSheet(Container(
-      padding: EdgeInsets.all(ScreenAdapter.width(20)),
-      color: Colors.white,
-      width: double.infinity,
-      height: ScreenAdapter.height(1200),
-      child: ListView(
-        children: controller.pcontent.value.attr!.map((e) {
-          return Wrap(
-            children: [
-              Container(
-                padding: EdgeInsets.only(
-                    top: ScreenAdapter.width(20),
-                    left: ScreenAdapter.width(20)),
-                width: ScreenAdapter.width(1040),
-                child: Text(
-                  "${e.cate}",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                width: ScreenAdapter.width(1040),
-                child: Wrap(
-                  children: e.list!.map((value) {
-                    print(value);
-                  return Container(
-                      margin: EdgeInsets.only(right: ScreenAdapter.width(20)),
-                      child:  Chip(
-                          padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                          shape: StadiumBorder(),
-                          side: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          backgroundColor: Color.fromARGB(31, 233, 213, 213),
-                          label: Text(value)));
-                }).toList()),
-              ),
-            ],
+    Get.bottomSheet(GetBuilder<ProductContentController>(
+        init: controller,
+        builder: (controller) {
+          return Container(
+            padding: EdgeInsets.all(ScreenAdapter.width(20)),
+            color: Colors.white,
+            width: double.infinity,
+            height: ScreenAdapter.height(1200),
+            child: ListView(
+              children: controller.pcontent.value.attr!
+                  .asMap()
+                  .entries
+                  .map((element) {
+                return Wrap(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: ScreenAdapter.width(20),
+                          left: ScreenAdapter.width(20)),
+                      width: ScreenAdapter.width(1040),
+                      child: Text(
+                        "${element.value.cate}",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      width: ScreenAdapter.width(1040),
+                      child: Wrap(
+                          children: element.value.attrList!
+                              .asMap()
+                              .entries
+                              .map((category) {
+                        return InkWell(
+                          onTap: () {
+                            controller.changeAttr(element.key, category.key);
+                          },
+                          child: Container(
+                              margin: EdgeInsets.only(
+                                  right: ScreenAdapter.width(20)),
+                              child: Chip(
+                                  padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                                  shape: StadiumBorder(),
+                                  side: BorderSide(
+                                    color: Colors.transparent,
+                                  ),
+                                  backgroundColor: category.value["checked"]
+                                      ? Colors.red
+                                      : Color.fromARGB(31, 233, 213, 213),
+                                  label: Text(category.value["title"]))),
+                        );
+                      }).toList()),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
           );
-        }).toList(),
+        }));
+  }
+
+  Widget _subHeader() {
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.white,
+       child: Column(
+        children: [
+          Row(
+            children: [ 
+              Expanded(child: Container(height: ScreenAdapter.height(120), alignment: Alignment.center, child: const Text("商品介绍", style: TextStyle(color: Colors.red),),)),
+              Expanded(child: Container(height: ScreenAdapter.height(120), alignment: Alignment.center, child: const Text("规格参数",),))
+            ],
+          )
+        ],
       ),
-    ));
+    );
   }
 
   PreferredSize _appBar(BuildContext context) {
@@ -248,7 +283,7 @@ class ProductContentView extends GetView<ProductContentController> {
       child: Column(
         children: [
           FirstPageViewView(showBottomAttr),
-          SecondPageViewView(),
+          SecondPageViewView(_subHeader),
           ThirdPageViewView(),
         ],
       ),
@@ -347,6 +382,11 @@ class ProductContentView extends GetView<ProductContentController> {
         children: [
           _body(),
           _bottom(context),
+          Obx(() => controller.showSubHeaderTabs.value == true ? Positioned(
+            top: ScreenAdapter.getstatusBarHeigh() + ScreenAdapter.height(120),
+            left: 0,
+            right: 0,
+            child:  _subHeader(),) : Text(""))
         ],
       ),
     );

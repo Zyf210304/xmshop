@@ -104,28 +104,51 @@ class PcountItemModel {
   }
 }
 
+// class PcontentAttrModel {
+//   String? cate;
+//   List<String>? list;
+//   List<Map>? attrList;
+
+//   PcontentAttrModel({this.cate, this.list});
+
+//   PcontentAttrModel.fromJson(Map<String, dynamic> json) {
+//     cate = json['cate'];
+//     list = json['list'].cast<String>();
+//     attrList = [];
+//     // attrList = json['attrList'].cast<Map>();
+//     // if (json['attrList'] != null) {
+//     //   attrList = json['attrList'].cast<Map>();
+//     // }
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final data = <String, dynamic>{};
+//     data['cate'] = cate;
+//     data['list'] = list;
+//     // if (attrList != null) {
+//     //   data['attrList'] = [];
+//     // }
+//     return data;
+//   }
+// }
+
+
 class PcontentAttrModel {
   String? cate;
   List<String>? list;
-  List<String>? attrList;
-
-  PcontentAttrModel({this.cate, this.list, this.attrList});
+  List<Map>? attrList;
+  PcontentAttrModel({this.cate, this.list});
 
   PcontentAttrModel.fromJson(Map<String, dynamic> json) {
     cate = json['cate'];
     list = json['list'].cast<String>();
-    if (json['attrList'] != null) {
-      attrList = json['attrList'].cast<String>();
-    }
+    attrList=[];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['cate'] = cate;
     data['list'] = list;
-    if (attrList != null) {
-      data['attrList'] = attrList;
-    }
     return data;
   }
 }

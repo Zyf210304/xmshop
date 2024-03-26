@@ -8,16 +8,21 @@ import '../../../services/screenAdapter.dart';
 class SecondPageViewView extends GetView {
   @override
   ProductContentController controller = Get.find();
+  Function subHeader;
 
-  SecondPageViewView({Key? key}) : super(key: key);
+
+  SecondPageViewView(this.subHeader,{Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container( 
       key: controller.globalKey2,
       width: ScreenAdapter.width(1080),
-      height: ScreenAdapter.width(1900),
-      color: Colors.yellow,
-      child: Text("详情\n1\n2\n3\n1\n2\n3"),
+      height: ScreenAdapter.width(1080),
+      child: Column(
+        children: [
+          subHeader()
+        ],
+      ),
     );
   }
 }
