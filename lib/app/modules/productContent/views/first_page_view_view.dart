@@ -97,12 +97,12 @@ class FirstPageViewView extends GetView {
                   padding: EdgeInsets.only(top: ScreenAdapter.width(20)),
                   child: InkWell(
                     onTap: () {
-                      showBottomAttr();
+                      showBottomAttr(1);
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
+                          Obx(() => Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
@@ -112,10 +112,10 @@ class FirstPageViewView extends GetView {
                               Padding(
                                 padding: EdgeInsets.only(
                                     left: ScreenAdapter.width(20)),
-                                child: Text("115, 黑色， XL 1jian "),
+                                child: Text(controller.selectedAttr.value),
                               )
                             ],
-                          ),
+                          )),
                           Icon(Icons.arrow_forward_ios_rounded,
                               color: Colors.black38,
                               size: ScreenAdapter.fontSize(45))

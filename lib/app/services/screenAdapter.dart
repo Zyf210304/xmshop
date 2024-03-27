@@ -27,5 +27,10 @@ class ScreenAdapter {
 
     return ScreenUtil().statusBarHeight;
   }
+
+  static getbottomBarHeight () {
+
+    return ScreenUtil().bottomBarHeight;
+  }
   
 }

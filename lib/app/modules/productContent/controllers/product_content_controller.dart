@@ -31,6 +31,8 @@ class ProductContentController extends GetxController {
 
   //商品种类选择
   var pcontentAttr = <PcontentAttrModel>[].obs;
+  //保存筛选属性值
+  var selectedAttr = "".obs;
 
   //container的位置
   var gk2postion = 0.0;
@@ -47,6 +49,9 @@ class ProductContentController extends GetxController {
   //浮动显示导航选中位置
   var selectedSubTitleIndex = 1.obs;
 
+  //购买的数量
+  var buyNumber = 1.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -55,6 +60,9 @@ class ProductContentController extends GetxController {
 
     //获取商品详情数据
     getPcontenttData();
+
+
+    // setSelectedAttr();
   }
 
   @override
@@ -154,6 +162,7 @@ class ProductContentController extends GetxController {
       pcontentAttr.value = pcontent.value.attr!;
       initAttr(pcontentAttr);
       // print(pcontentAttr);
+      setSelectedAttr();
       update();
     }
   }
@@ -181,6 +190,23 @@ class ProductContentController extends GetxController {
     update();
   }
 
+  //保存筛选属性值
+  setSelectedAttr() {
+    List tempList = [];
+    for (var i = 0; i < pcontentAttr.length; i++) {
+      for (var j = 0; j < pcontentAttr[i].attrList!.length; j++) {
+
+        if(pcontentAttr[i].attrList![j]["checked"]) {
+            tempList.add(pcontentAttr[i].attrList![j]["title"]);
+        }
+      }
+    }
+
+    selectedAttr.value =tempList.join(",");
+    update();
+    
+  }
+
   // 切换顶部浮动导航位置
   changeSubTabsSelectIndex(index) {
     selectedSubTitleIndex.value = index;
@@ -188,4 +214,16 @@ class ProductContentController extends GetxController {
     scrollController.jumpTo(gk2postion);
     update();
   }
+
+  //改变数量
+  changeBuyNumber(isAdd) {
+    if (isAdd == true) {
+      buyNumber.value ++;
+    } else {
+      if (buyNumber > 1) {
+        buyNumber.value --;
+      }
+    }
+  }
+  
 }

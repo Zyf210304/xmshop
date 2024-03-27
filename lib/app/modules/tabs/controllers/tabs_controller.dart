@@ -11,8 +11,8 @@ import '../../user/views/user_view.dart';
 
 class TabsController extends GetxController {
 
-  RxInt currentIndex = 3.obs;
-  PageController pageController=PageController(initialPage:3);
+  RxInt currentIndex = 0.obs;
+  PageController pageController=PageController(initialPage:0);
   // HttpClient httpClient = HttpClient();
 
   final List<Widget> pages = const [

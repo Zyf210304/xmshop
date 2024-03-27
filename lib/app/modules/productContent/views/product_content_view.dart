@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -11,69 +10,153 @@ import '../../../services/screenAdapter.dart';
 import './first_page_view_view.dart';
 import './second_page_view_view.dart';
 import './third_page_view_view.dart';
+import './cart_item_number_view.dart';
 
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
 
-  
-  showBottomAttr() {
+  addCart() {
+    controller.setSelectedAttr();
+  }
+
+  buy() {
+    controller.setSelectedAttr();
+  }
+
+  //action 1 筛选属性 2加入购物车 3立即购买
+  showBottomAttr(action) {
     Get.bottomSheet(GetBuilder<ProductContentController>(
         init: controller,
         builder: (controller) {
           return Container(
-            padding: EdgeInsets.all(ScreenAdapter.width(20)),
-            color: Colors.white,
-            width: double.infinity,
-            height: ScreenAdapter.height(1200),
-            child: ListView(
-              children: controller.pcontent.value.attr!
-                  .asMap()
-                  .entries
-                  .map((element) {
-                return Wrap(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                          top: ScreenAdapter.width(20),
-                          left: ScreenAdapter.width(20)),
-                      width: ScreenAdapter.width(1040),
-                      child: Text(
-                        "${element.value.cate}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      width: ScreenAdapter.width(1040),
-                      child: Wrap(
-                          children: element.value.attrList!
-                              .asMap()
-                              .entries
-                              .map((category) {
-                        return InkWell(
-                          onTap: () {
-                            controller.changeAttr(element.key, category.key);
-                          },
-                          child: Container(
-                              margin: EdgeInsets.only(
-                                  right: ScreenAdapter.width(20)),
-                              child: Chip(
-                                  padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                                  shape: StadiumBorder(),
-                                  side: BorderSide(
-                                    color: Colors.transparent,
-                                  ),
-                                  backgroundColor: category.value["checked"]
-                                      ? Colors.red
-                                      : Color.fromARGB(31, 233, 213, 213),
-                                  label: Text(category.value["title"]))),
-                        );
-                      }).toList()),
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
-          );
+              padding: EdgeInsets.all(ScreenAdapter.width(20)),
+              color: Colors.white,
+              width: double.infinity,
+              height: ScreenAdapter.height(1200),
+              child: Stack(
+                children: [
+                  //筛选属性
+                  ListView(
+                    children: [
+                    ...controller.pcontent.value.attr!
+                        .asMap()
+                        .entries
+                        .map((element) {
+                      return Wrap(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                                top: ScreenAdapter.width(20),
+                                left: ScreenAdapter.width(20)),
+                            width: ScreenAdapter.width(1040),
+                            child: Text(
+                              "${element.value.cate}",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Container(
+                            width: ScreenAdapter.width(1040),
+                            child: Wrap(
+                                children: element.value.attrList!
+                                    .asMap()
+                                    .entries
+                                    .map((category) {
+                              return InkWell(
+                                onTap: () {
+                                  controller.changeAttr(
+                                      element.key, category.key);
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                        right: ScreenAdapter.width(20)),
+                                    child: Chip(
+                                        padding:
+                                            EdgeInsets.fromLTRB(4, 2, 4, 2),
+                                        shape: StadiumBorder(),
+                                        side: BorderSide(
+                                          color: Colors.transparent,
+                                        ),
+                                        backgroundColor: category
+                                                .value["checked"]
+                                            ? Colors.red
+                                            : Color.fromARGB(31, 233, 213, 213),
+                                        label: Text(category.value["title"]))),
+                              );
+                            }).toList()),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+
+                    action != 1 ?   Padding(padding: EdgeInsets.all(ScreenAdapter.width(20)), child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      const Text("数量", style: TextStyle(fontWeight: FontWeight.bold),),
+                      CartItemNumberView()
+                    ],)) : const Text(""),
+                      
+                    ]
+                  ),
+
+                  Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: ScreenAdapter.getbottomBarHeight(),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Container(
+                            height: ScreenAdapter.height(120),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  if (action == 1) {
+                                    //筛选
+                                    controller.setSelectedAttr();
+                                  } else if (action == 2) {
+                                    //加入购物车
+
+                                    addCart();
+                                  } else {
+                                    //立即购买
+
+                                    buy();
+                                  }
+
+                                  Get.back();
+                                },
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        action == 2
+                                            ? const Color.fromARGB(
+                                                229, 235, 243, 5)
+                                            : const Color.fromRGBO(
+                                                253, 1, 0, 0.9)),
+                                    foregroundColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)))),
+                                child: Text(action == 2
+                                    ? "加入购物车"
+                                    : action == 3
+                                        ? "立即购买"
+                                        : "确定")),
+                          ))
+                        ],
+                      )),
+
+                  Positioned(
+                      top: 0,
+                      right: 2,
+                      child: IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ))
+                ],
+              ));
         }));
   }
 
@@ -147,12 +230,13 @@ class ProductContentView extends GetView<ProductContentController> {
                                         const Duration(milliseconds: 500));
 
                                 //修正时间
-                                Timer myTimer = Timer(const Duration(milliseconds: 501), () { 
+                                Timer myTimer = Timer(
+                                    const Duration(milliseconds: 501), () {
                                   controller.scrollController.jumpTo(
                                       controller.scrollController.offset -
-                                          ScreenAdapter.height(120)- ScreenAdapter.getstatusBarHeigh());
+                                          ScreenAdapter.height(120) -
+                                          ScreenAdapter.getstatusBarHeigh());
                                 });
-                                
                               }
                               if (entrie.key == 2) {
                                 Scrollable.ensureVisible(
@@ -161,12 +245,13 @@ class ProductContentView extends GetView<ProductContentController> {
                                     duration:
                                         const Duration(milliseconds: 500));
 
-                                 Timer myTimer = Timer(const Duration(milliseconds: 501), () { 
+                                Timer myTimer = Timer(
+                                    const Duration(milliseconds: 501), () {
                                   controller.scrollController.jumpTo(
                                       controller.scrollController.offset -
-                                          ScreenAdapter.height(120) - ScreenAdapter.getstatusBarHeigh());
+                                          ScreenAdapter.height(120) -
+                                          ScreenAdapter.getstatusBarHeigh());
                                 });
-                            
                               }
                             },
                             child: Column(
@@ -359,7 +444,7 @@ class ProductContentView extends GetView<ProductContentController> {
                           // margin: const EdgeInsets.only( right :20),
                           child: ElevatedButton(
                         onPressed: () {
-                          showBottomAttr();
+                          showBottomAttr(2);
                         },
                         style: ButtonStyle(
                             backgroundColor:
@@ -380,7 +465,7 @@ class ProductContentView extends GetView<ProductContentController> {
                           margin: const EdgeInsets.only(right: 20),
                           child: ElevatedButton(
                             onPressed: () {
-                              showBottomAttr();
+                              showBottomAttr(3);
                             },
                             style: ButtonStyle(
                                 backgroundColor:
@@ -430,6 +515,4 @@ class ProductContentView extends GetView<ProductContentController> {
       ),
     );
   }
-
-  
 }
