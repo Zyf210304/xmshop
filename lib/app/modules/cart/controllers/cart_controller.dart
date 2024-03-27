@@ -6,7 +6,8 @@ class CartController extends GetxController {
   //TODO: Implement CartController
 
   var cartList = [].obs;
-
+  var isAllChoose = true.obs;
+  var allPrice = 0.obs;
 
   @override
   void onInit() {
@@ -32,7 +33,7 @@ class CartController extends GetxController {
 
   getCartListData() async{
     cartList.value = await CartServices.getCartData();
-    print(cartList);
+    calculateIsAllChoose();
     update();
   }
 
@@ -52,11 +53,67 @@ class CartController extends GetxController {
       tempList.add(cartList[i]);
     }
     
-    cartList.value = tempList;
-    CartServices.setCartList(cartList);
-    update();
+    saveAndUpdate(tempList); 
 
   }
 
 
+  //改变数量
+  changChecked(cartItem) {
+    var tempList = [];
+    for (var i = 0; i < cartList.length; i++) {
+      if (cartList[i]["_id"] == cartItem["_id"] && cartList[i]["selectedAttr"] == cartItem["selectedAttr"]) {
+
+           cartList[i]["checked"] = !cartList[i]["checked"];
+        
+      } 
+      tempList.add(cartList[i]);
+    }
+    
+
+    saveAndUpdate(tempList); 
+
+  }
+
+
+  calculateIsAllChoose() {
+    bool isCheckedAll = true;
+    var tempCount = 0;
+
+
+    for (var i = 0; i < cartList.length; i++) {
+      
+      if(!cartList[i]["checked"]) {
+        isCheckedAll = false;
+      }
+      
+      int price =  cartList[i]["price"];
+      int count = cartList[i]["count"];
+      tempCount = tempCount + price  *count;
+    }
+    isAllChoose.value = isCheckedAll;
+    allPrice.value = tempCount.toInt();
+    print(allPrice);
+
+
+  }
+  
+  checkedAll(isAll) {
+    var tempList = [];
+    for (var i = 0; i < cartList.length; i++) {
+      
+      cartList[i]["checked"] = isAll;
+      tempList.add(cartList[i]);
+    }
+    isAllChoose.value = isAll;
+    saveAndUpdate(tempList); 
+  }
+
+
+  saveAndUpdate(tempList) {
+    cartList.value = tempList;
+    calculateIsAllChoose();
+    CartServices.setCartList(cartList);
+    update();
+  }
 }

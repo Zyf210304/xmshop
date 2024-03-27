@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../services/screenAdapter.dart';
 import './cart_item_number_view.dart';
+import '../controllers/cart_controller.dart';
 
 class CartItemView extends GetView {
   final Map cartItem;
-  const CartItemView(this.cartItem,{Key? key}) : super(key: key);
+
+   @override
+  CartController controller = Get.find();
+  CartItemView(this.cartItem,{Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +26,9 @@ class CartItemView extends GetView {
           SizedBox(
             width: ScreenAdapter.width(100),
             child: Checkbox(
-                activeColor: Colors.red, value: true, onChanged: (value) {}),
+                activeColor: Colors.red, value: cartItem["checked"], onChanged: (value) {
+                  controller.changChecked(cartItem);
+                }),
           ),
           Container(
             padding: EdgeInsets.all(ScreenAdapter.width(24)),

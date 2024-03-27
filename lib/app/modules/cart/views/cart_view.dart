@@ -9,7 +9,7 @@ import './cart_item_view.dart';
 class CartView extends GetView {
 
   //注意 CartView再多个地方调用 需要手动获取Controller
-  
+
   @override
   final CartController controller = Get.put(CartController());
 
@@ -55,15 +55,18 @@ class CartView extends GetView {
                               color: Colors.black12,
                               width: ScreenAdapter.height(2))),
                     ),
-                    child: Row(
+                    child: Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
                             Checkbox(
-                                value: true,
+                                value: controller.isAllChoose.value,
+                                activeColor: Colors.red,
                                 onChanged: (value) {
-                                  print(value);
+                                  
+                                  controller.checkedAll(value);
+
                                 }),
                             const Text("全选")
                           ],
@@ -72,7 +75,7 @@ class CartView extends GetView {
                           children: [
                             const Text("合计: "),
                             Text(
-                              "9999.9",
+                              "${controller.allPrice}",
                               style: TextStyle(
                                   fontSize: ScreenAdapter.fontSize(58),
                                   color: Colors.red),
@@ -92,7 +95,7 @@ class CartView extends GetView {
                           ],
                           )   
                       ],
-                    ),
+                    ),)
                   ))
             ],
           ),
