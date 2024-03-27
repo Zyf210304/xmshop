@@ -15,12 +15,12 @@ class TabsController extends GetxController {
   PageController pageController=PageController(initialPage:0);
   // HttpClient httpClient = HttpClient();
 
-  final List<Widget> pages = const [
-    HomeView(),
-    CategoryView(),
-    GiveView(),
+  final List<Widget> pages =  [
+    const HomeView(),
+    const CategoryView(),
+    const GiveView(),
     CartView(),
-    UserView()
+    const UserView()
   ];
   @override
   void onInit() {

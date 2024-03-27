@@ -63,7 +63,7 @@ class CartItemView extends GetView {
                         color: Colors.red),
                   ),
                   Container(
-                    margin: EdgeInsets.only(right: 10),
+                    margin: const EdgeInsets.only(right: 10, bottom: 10),
                     child: CartItemNumberView(cartItem),
                   )
                 ],

@@ -6,8 +6,14 @@ import '../../../services/screenAdapter.dart';
 import '../controllers/cart_controller.dart';
 import './cart_item_view.dart';
 
-class CartView extends GetView<CartController> {
-  const CartView({Key? key}) : super(key: key);
+class CartView extends GetView {
+
+  //注意 CartView再多个地方调用 需要手动获取Controller
+  
+  @override
+  final CartController controller = Get.put(CartController());
+
+   CartView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +23,15 @@ class CartView extends GetView<CartController> {
           title: const Text('购物车'),
           centerTitle: true,
         ),
-        body: Container(
+        body: GetBuilder<CartController>(
+          initState: (state){
+            controller.getCartListData();
+          },
+          init: controller,
+          builder: (controller){
+          return  Container(
           color: const Color.fromRGBO(246, 246, 246, 1),
-          child: Obx(() => controller.cartList.isEmpty ? const Center(child: Text("购物车还是空的呀"),) : Stack(
+          child: controller.cartList.isEmpty ? const Center(child: Text("购物车还是空的呀"),) : Stack(
             children: [
               ListView.builder(
                   padding: EdgeInsets.only(bottom: ScreenAdapter.height(200)),
@@ -83,7 +95,13 @@ class CartView extends GetView<CartController> {
                     ),
                   ))
             ],
-          ),)
-        ));
+          ),
+        );
+        })
+        
+
+        
+      
+        );
   }
 }

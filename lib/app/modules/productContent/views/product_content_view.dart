@@ -425,12 +425,18 @@ class ProductContentView extends GetView<ProductContentController> {
                   SizedBox(
                     width: ScreenAdapter.width(200),
                     height: ScreenAdapter.width(160),
-                    child: const Column(
+                    child:  InkWell(
+                      onTap: () {
+                        Get.toNamed("/cart");
+                      },
+                      child:const Column(
+                        
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.shopping_cart),
                         Text("购物车"),
                       ],
+                    ),
                     ),
                   ),
                   Expanded(
