@@ -15,13 +15,7 @@ import './cart_item_number_view.dart';
 class ProductContentView extends GetView<ProductContentController> {
   const ProductContentView({Key? key}) : super(key: key);
 
-  addCart() {
-    controller.setSelectedAttr();
-  }
 
-  buy() {
-    controller.setSelectedAttr();
-  }
 
   //action 1 筛选属性 2加入购物车 3立即购买
   showBottomAttr(action) {
@@ -112,17 +106,18 @@ class ProductContentView extends GetView<ProductContentController> {
                                   if (action == 1) {
                                     //筛选
                                     controller.setSelectedAttr();
+                                    Get.back();
                                   } else if (action == 2) {
                                     //加入购物车
 
-                                    addCart();
+                                    controller.addCart();
                                   } else {
                                     //立即购买
 
-                                    buy();
+                                    controller.buy();
                                   }
 
-                                  Get.back();
+                                  
                                 },
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(

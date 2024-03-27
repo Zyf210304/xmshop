@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../services/screenAdapter.dart';
 import '../../../models/pcount_model.dart';
 import '../../../services/httpsClient.dart';
+import '../../../services/cartServices.dart';
+
 
 class ProductContentController extends GetxController {
   //TODO: Implement ProductContentController
@@ -224,6 +226,23 @@ class ProductContentController extends GetxController {
         buyNumber.value --;
       }
     }
+  }
+
+//加入购物车
+  addCart() {
+    setSelectedAttr();
+    CartServices.addCart(pcontent.value, selectedAttr.value, buyNumber.value);
+
+    Get.back();
+    // Get.snackbar("提示", "商品添加购物车成功");
+    
+  }
+
+
+//立即购买
+  buy() {
+    setSelectedAttr();
+    Get.back();
   }
   
 }

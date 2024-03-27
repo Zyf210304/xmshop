@@ -5,7 +5,8 @@ import '../../../services/screenAdapter.dart';
 import './cart_item_number_view.dart';
 
 class CartItemView extends GetView {
-  const CartItemView({Key? key}) : super(key: key);
+  final Map cartItem;
+  const CartItemView(this.cartItem,{Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +27,7 @@ class CartItemView extends GetView {
             padding: EdgeInsets.all(ScreenAdapter.width(24)),
             width: ScreenAdapter.width(280),
             child: Image.network(
-              "https://www.itying.com/images/shouji.png",
+              cartItem["pic"],
               fit: BoxFit.fitHeight,
             ),
           ),
@@ -35,43 +36,35 @@ class CartItemView extends GetView {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "小米11",
+                "${cartItem["title"]}",
                 style: TextStyle(
                     fontSize: ScreenAdapter.fontSize(36),
                     fontWeight: FontWeight.bold),
               ),
-              const Row(
+               Row(
                 children: [
                   Chip(
-                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                      shape: StadiumBorder(),
-                      side: BorderSide(
+                      padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                      shape: const StadiumBorder(),
+                      side: const BorderSide(
                         color: Colors.transparent,
                       ),
-                      backgroundColor: Color.fromARGB(31, 233, 213, 213),
-                      label: Text("选择属性")),
-                  Chip(
-                      padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-                      shape: StadiumBorder(),
-                      side: BorderSide(
-                        color: Colors.transparent,
-                      ),
-                      backgroundColor: Color.fromARGB(31, 233, 213, 213),
-                      label: Text("选择属性")),
+                      backgroundColor:const Color.fromARGB(31, 233, 213, 213),
+                      label: Text("${cartItem["selectedAttr"]}")),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "89.9",
+                    "${cartItem["price"]}",
                     style: TextStyle(
                         fontSize: ScreenAdapter.fontSize(58),
                         color: Colors.red),
                   ),
                   Container(
                     margin: EdgeInsets.only(right: 10),
-                    child: CartItemNumberView(),
+                    child: CartItemNumberView(cartItem),
                   )
                 ],
               )
