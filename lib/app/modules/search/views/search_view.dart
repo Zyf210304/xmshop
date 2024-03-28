@@ -158,6 +158,7 @@ class SearchView extends GetView<SearchController1> {
                     }, child: const Text("取消")),
                     
                     ElevatedButton(
+                      
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red),
                          foregroundColor: MaterialStateProperty.all(Colors.white),
