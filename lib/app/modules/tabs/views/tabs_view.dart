@@ -28,7 +28,7 @@ class TabsView extends GetView<TabsController> {
               },
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "首页"),
-                BottomNavigationBarItem(
+                BottomNavigationBarItem( 
                     icon: Icon(Icons.category), label: "分类"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.room_service), label: "服务"),

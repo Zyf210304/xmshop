@@ -8,8 +8,14 @@ abstract class Routes {
   static const PRODUCT_LIST = _Paths.PRODUCT_LIST;
   static const SEARCH = _Paths.SEARCH;
   static const PRODUCT_CONTENT = _Paths.PRODUCT_CONTENT;
-  static const FIRST_PAGE = _Paths.PRODUCT_CONTENT + _Paths.FIRST_PAGE;
   static const CART = _Paths.CART;
+  static const CODE_LOGIN_STEP_ONE = _Paths.CODE_LOGIN_STEP_ONE;
+  static const CODE_LOGIN_STEP_TWO = _Paths.CODE_LOGIN_STEP_TWO;
+  static const ON_SETP_LOGIN =  _Paths.ON_SETP_LOGIN;
+  static const PASS_LOGIN = _Paths.PASS_LOGIN;
+  static const REGISTER_STEP_ONE = _Paths.REGISTER_STEP_ONE;
+  static const REGISTER_STEP_TWO =  _Paths.REGISTER_STEP_TWO;
+  static const REGISTER_STEP_THREE = _Paths.REGISTER_STEP_THREE;
 }
 
 abstract class _Paths {
@@ -18,6 +24,12 @@ abstract class _Paths {
   static const PRODUCT_LIST = '/product-list';
   static const SEARCH = '/search';
   static const PRODUCT_CONTENT = '/product-content';
-  static const FIRST_PAGE = '/first-page';
   static const CART = '/cart';
+  static const CODE_LOGIN_STEP_ONE = '/code-login-step-one';
+  static const CODE_LOGIN_STEP_TWO = '/code-login-step-two';
+  static const ON_SETP_LOGIN = '/on-setp-login';
+  static const PASS_LOGIN = '/pass-login';
+  static const REGISTER_STEP_ONE = '/register-step-one';
+  static const REGISTER_STEP_TWO = '/register-step-two';
+  static const REGISTER_STEP_THREE = '/register-step-three';
 }
