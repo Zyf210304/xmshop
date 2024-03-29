@@ -5,8 +5,8 @@ import 'package:flutter/gestures.dart';
 import '../services/screenAdapter.dart';
 
 class DelegateRichText extends StatefulWidget {
-  final void Function(bool)? chooseChange;
-  DelegateRichText({super.key, this.chooseChange});
+  final void Function(bool)? chooseChanged;
+  const DelegateRichText({super.key, this.chooseChanged});
 
   @override
   State<DelegateRichText> createState() => _DelegateRichTextState();
@@ -68,27 +68,27 @@ class _DelegateRichTextState extends State<DelegateRichText> {
               });
               
               print("--------- $v");
-              widget.chooseChange;
-              
+              widget.chooseChanged!(v!);
+
             }),
             Expanded(
                 child: Container(
               child: RichText(
                   text: TextSpan(
                       text: "已阅读并同意",
-                      style: TextStyle(color: Colors.black87),
+                      style: const TextStyle(color: Colors.black87),
                       children: [
                     TextSpan(
                         text: "《商城用户协议》",
-                        style: TextStyle(color: Colors.orange),
+                        style:const TextStyle(color: Colors.orange),
                         recognizer: _tapUser),
                     TextSpan(
                         text: "《隐私协议》",
-                        style: TextStyle(color: Colors.orange),
+                        style:const TextStyle(color: Colors.orange),
                         recognizer: _tapPolicy),
                     TextSpan(
                         text: "《商城服务协议》",
-                        style: TextStyle(color: Colors.orange),
+                        style:const TextStyle(color: Colors.orange),
                         recognizer: _tapServer),
                   ])),
             ))
