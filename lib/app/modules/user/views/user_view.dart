@@ -91,7 +91,7 @@ class UserView extends GetView<UserController> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "${controller.userList[0]["username"]}",
+                          "${controller.userInfo.value.username}",
                           style:
                               TextStyle(fontSize: ScreenAdapter.fontSize(46)),
                         ),
@@ -102,7 +102,7 @@ class UserView extends GetView<UserController> {
                 )),
 
           //用户资金信息
-          Container(
+          Obx(() => Container(
             height: ScreenAdapter.height(180),
             margin: EdgeInsets.only(top: ScreenAdapter.height(60)),
             child: Row(
@@ -121,9 +121,9 @@ class UserView extends GetView<UserController> {
                                     child: Icon(Icons.wallet),
                                   )
                                 : Text(
-                                    "-",
+                                    controller.moneyValue.value[e.key],
                                     style: TextStyle(
-                                        fontSize: ScreenAdapter.fontSize(80),
+                                        fontSize: ScreenAdapter.fontSize(50),
                                         fontWeight: FontWeight.bold),
                                   ),
                             Text(
@@ -135,7 +135,7 @@ class UserView extends GetView<UserController> {
                           ],
                         )))
                     .toList()),
-          ),
+          )),
 
           //新人礼
           Container(

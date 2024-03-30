@@ -1,12 +1,18 @@
 import 'package:get/get.dart';
 import '../../../services/ityingFonts.dart';
 import '../../../services/userServices.dart';
+import '../../../models/user_model.dart';
 
 class UserController extends GetxController {
   //TODO: Implement UserController
 
   var isLogin = false.obs;
   var userList = [].obs;
+  var userInfo = Userinfo().obs;
+
+  //资金信息
+  var moneyArr =  ["米金", "优惠券", "红包", "最高额度", "钱包"];
+  var moneyValue = ["-", "-", "-", "-" ,"-"].obs;
 
   var servicesTitleArr = [
     "一键安装",
@@ -52,8 +58,10 @@ class UserController extends GetxController {
     isLogin.value = tempLoginState;
 
     var tempList = await UserServices.getUserInfo();
-    if (tempList!=[]) {
-      userList.value = tempList as List;
+    if (tempList.isNotEmpty) {
+      userList.value = tempList;
+      userInfo.value = Userinfo.fromJson(tempList[0]);
+      moneyValue.value = ["${userInfo.value.gold}", "${userInfo.value.coupon}", "${userInfo.value.redPacket}", "${userInfo.value.quota}", ""];
     }
 
   }
@@ -63,6 +71,8 @@ class UserController extends GetxController {
     UserServices.loginOut();
     isLogin.value = false;
     userList.value = [];
+    userInfo.value = Userinfo();
+    moneyValue.value = ["-", "-", "-", "-" ,"-"];
     update();
   }
 
