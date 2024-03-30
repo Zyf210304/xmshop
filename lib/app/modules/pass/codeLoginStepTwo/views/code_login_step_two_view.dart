@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/message.dart';
 import '../../../../services/screenAdapter.dart';
 import '../../../../widget/logo.dart';
 import '../../../../widget/passButton.dart';
@@ -55,8 +56,15 @@ class CodeLoginStepTwoView extends GetView<CodeLoginStepTwoController> {
               animationDuration: const Duration(milliseconds: 300),
               enableActiveFill: true,
               controller: controller.editingController, //TextFiled控制器
-              onCompleted: (v) {
-                print("Completed");
+              onCompleted: (v) async {
+                MessageModel reslut = await controller.doLogin();
+                if (reslut.success) {
+                  Get.offAllNamed("/tabs", arguments: {"initialPage": 4});
+                  // ignore: use_build_context_synchronously
+                  FocusScope.of(context).requestFocus(FocusNode());
+                } else {
+                  Get.snackbar("提示", reslut.message);
+                }
               },
               onChanged: (value) {
                 print(value);
@@ -68,22 +76,19 @@ class CodeLoginStepTwoView extends GetView<CodeLoginStepTwoController> {
               appContext: context, //注意需要传入context
             ),
           ),
-          SizedBox(            
+          SizedBox(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(onPressed: () {}, child: Text("重新发送验证码")),
+                Obx(() => controller.seconds.value < 1
+                    ? TextButton(onPressed: () {
+                      controller.sendCode();
+                    }, child: const Text("重新发送验证码"))
+                    : Text("${controller.seconds.value}后可重新发送验证码")),
                 TextButton(onPressed: () {}, child: Text("帮助")),
               ],
             ),
           ),
-          PassButton(
-              text: "获取验证码",
-              onPressed: () {
-                print(controller.editingController.text);
-                // 隐藏键盘
-                FocusScope.of(context).requestFocus(FocusNode());
-              })
         ],
       ),
     );

@@ -32,61 +32,74 @@ class UserView extends GetView<UserController> {
         padding: EdgeInsets.all(ScreenAdapter.height(20)),
         children: [
           //登录注册
-          Obx(() =>  controller.isLogin == false ? Row(
-            children: [
-              SizedBox(
-                width: ScreenAdapter.width(40),
-              ),
-              SizedBox(
-                width: ScreenAdapter.width(150),
-                height: ScreenAdapter.width(150),
-                child: CircleAvatar(
-                  radius: ScreenAdapter.width(75),
-                  backgroundImage: const AssetImage("assets/images/user.png"),
-                ),
-              ),
-              SizedBox(
-                width: ScreenAdapter.width(40),
-              ),
-              InkWell( 
-                onTap: () {
-                  Get.toNamed("/code-login-step-one");
-                },
-              child: Text(
-                "登录/注册",
-                style: TextStyle(fontSize: ScreenAdapter.fontSize(46)),
-              ),),
-              SizedBox(
-                width: ScreenAdapter.width(40),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: ScreenAdapter.fontSize(36),
-                color: Colors.black45,
-              )
-            ],
-          ) : Row(
-            children: [
-              SizedBox(
-                width: ScreenAdapter.width(40),
-              ),
-              SizedBox(
-                width: ScreenAdapter.width(150),
-                height: ScreenAdapter.width(150),
-                child: CircleAvatar(
-                  radius: ScreenAdapter.width(75),
-                  backgroundImage: const AssetImage("assets/images/user.png"),
-                ),
-              ),
-              SizedBox(
-                width: ScreenAdapter.width(40),
-              ),
-              Text(
-                "${controller.userList[0]["username"]}",
-                style: TextStyle(fontSize: ScreenAdapter.fontSize(46)),
-              ),
-            ],
-          ) ),
+          Obx(() => controller.isLogin == false
+              ? Row(
+                  children: [
+                    SizedBox(
+                      width: ScreenAdapter.width(40),
+                    ),
+                    SizedBox(
+                      width: ScreenAdapter.width(150),
+                      height: ScreenAdapter.width(150),
+                      child: CircleAvatar(
+                        radius: ScreenAdapter.width(75),
+                        backgroundImage:
+                            const AssetImage("assets/images/user.png"),
+                      ),
+                    ),
+                    SizedBox(
+                      width: ScreenAdapter.width(40),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed("/code-login-step-one");
+                      },
+                      child: Text(
+                        "登录/注册",
+                        style: TextStyle(fontSize: ScreenAdapter.fontSize(46)),
+                      ),
+                    ),
+                    SizedBox(
+                      width: ScreenAdapter.width(40),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: ScreenAdapter.fontSize(36),
+                      color: Colors.black45,
+                    )
+                  ],
+                )
+              : Row(
+                  children: [
+                    SizedBox(
+                      width: ScreenAdapter.width(40),
+                    ),
+                    SizedBox(
+                      width: ScreenAdapter.width(150),
+                      height: ScreenAdapter.width(150),
+                      child: CircleAvatar(
+                        radius: ScreenAdapter.width(75),
+                        backgroundImage:
+                            const AssetImage("assets/images/user.png"),
+                      ),
+                    ),
+                    SizedBox(
+                      width: ScreenAdapter.width(40),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "${controller.userList[0]["username"]}",
+                          style:
+                              TextStyle(fontSize: ScreenAdapter.fontSize(46)),
+                        ),
+                        Text("高级会员"),
+                      ],
+                    ),
+                  ],
+                )),
 
           //用户资金信息
           Container(
@@ -250,35 +263,33 @@ class UserView extends GetView<UserController> {
                   ],
                 ),
                 GridView.count(
-                  shrinkWrap: true,
-                  physics:  const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
-                  childAspectRatio: 1.25,
-                  children: controller.servicesTitleArr.asMap().entries.map((e) => 
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                         Icon(
-                          controller.servicesIcon[e.key],
-                          color: Colors.black,
-                        ),
-                        Text(
-                          e.value,
-                          style: TextStyle(
-                              fontSize: ScreenAdapter.fontSize(30),
-                              color: Colors.black87),
-                        ),
-                      ],
-                    )
-                  ).toList()
-
-
-                  
-                ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 4,
+                    childAspectRatio: 1.25,
+                    children: controller.servicesTitleArr
+                        .asMap()
+                        .entries
+                        .map((e) => Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Icon(
+                                  controller.servicesIcon[e.key],
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  e.value,
+                                  style: TextStyle(
+                                      fontSize: ScreenAdapter.fontSize(30),
+                                      color: Colors.black87),
+                                ),
+                              ],
+                            ))
+                        .toList()),
               ],
             ),
           ),
-      
+
           //推荐
           //新人礼
           Container(
@@ -297,10 +308,12 @@ class UserView extends GetView<UserController> {
           ),
 
           //退出按钮
-          PassButton(text: "退出登录", onPressed: (){
-            controller.loginOut();
-          })
-       ],
+          PassButton(
+              text: "退出登录",
+              onPressed: () {
+                controller.loginOut();
+              })
+        ],
       ),
     );
   }

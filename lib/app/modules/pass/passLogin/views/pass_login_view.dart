@@ -8,6 +8,8 @@ import '../../../../widget/passButton.dart';
 import '../../../../widget/passTextField.dart';
 import '../../../../widget/userAgreement.dart';
 import '../controllers/pass_login_controller.dart';
+import '../../../../models/message.dart';
+
 
 class PassLoginView extends GetView<PassLoginController> {
   const PassLoginView({Key? key}) : super(key: key);
@@ -26,12 +28,14 @@ class PassLoginView extends GetView<PassLoginController> {
           const Logo(),
           //输入手机号
           PassTextFiled(
+            controller: controller.telController,
               hintText: "请输入手机号",
               onChanged: (value) {
                 print(value);
               }),
 
           PassTextFiled(
+            controller: controller.passController ,
               hintText: "请输入密码",
               onChanged: (value) {
                 print(value);
@@ -40,10 +44,22 @@ class PassLoginView extends GetView<PassLoginController> {
           const UserAgreement(),
           //登录按钮
           PassButton(
-              text: "获取验证码",
-              onPressed: () {
-                print("获取验证码");
-                Get.toNamed("/code-login-step-two");
+              text: "登录",
+              onPressed: () async{
+                if (GetUtils.isPhoneNumber(controller.telController.text) && controller.passController.text.length > 5) {
+                   MessageModel result = await controller.doLogin();
+                  if (result.success) {
+                    print("登录成功");
+                     Get.offAllNamed("/tabs", arguments: {
+                      "initialPage": 4 //注册完成后会加载tabs第五个页面
+                    });
+                  } else {
+                     Get.snackbar("提示", result.message);
+                  }
+                } else {
+                  Get.snackbar("提示", "账号密码格式错误");
+                }
+                
               }),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:xmshop/app/models/message.dart';
 import 'package:xmshop/app/widget/passButton.dart';
 import '../../../../widget/userAgreement.dart';
 import '../../../../widget/passTextField.dart';
@@ -26,6 +27,7 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
           const Logo(),
           //输入手机号
           PassTextFiled(
+            controller: controller.telController,
               hintText: "请输入手机号",
               onChanged: (value) {
                 print(value);
@@ -34,9 +36,20 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
           //用户协议
           const UserAgreement(),
           //登录按钮
-          PassButton(text: "获取验证码", onPressed: (){
+          PassButton(text: "获取验证码", onPressed: () async{
             print("获取验证码");
-            Get.toNamed("/code-login-step-two");
+            if(GetUtils.isPhoneNumber(controller.telController.text)) {
+
+              MessageModel resulte = await controller.sendCode();
+              if (resulte.success) {
+                Get.toNamed("/code-login-step-two", arguments: {"tel":controller.telController.text});
+              } else {
+                Get.snackbar("提示", resulte.message);
+              }
+            } else {
+              Get.snackbar("提示", "手机号格式错误");
+            }
+            
           }),
          SizedBox(height: ScreenAdapter.height(40)),
            Row(
