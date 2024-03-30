@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/on_setp_login_controller.dart';
+import '../controllers/on_step_login_controller.dart';
 
-class OnSetpLoginView extends GetView<OnSetpLoginController> {
-  const OnSetpLoginView({Key? key}) : super(key: key);
+class OnStepLoginView extends GetView<OnStepLoginController> {
+  const OnStepLoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('OnSetpLoginView'),
+        title: const Text('OnStepLoginView'),
         centerTitle: true,
       ),
-      body: const Center(
+      body: Center(
         child: Text(
-          'OnSetpLoginView is working',
+          'OnStepLoginView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

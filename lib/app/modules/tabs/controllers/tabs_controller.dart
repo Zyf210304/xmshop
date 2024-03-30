@@ -11,8 +11,8 @@ import '../../user/views/user_view.dart';
 
 class TabsController extends GetxController {
 
-  RxInt currentIndex = 4 .obs;
-  PageController pageController=PageController(initialPage:4);
+  RxInt currentIndex = 0 .obs;
+  PageController pageController= Get.arguments != null ? PageController(initialPage:Get.arguments["initialPage"]) : PageController(initialPage:0);
   // HttpClient httpClient = HttpClient();
 
   final List<Widget> pages =  [
@@ -21,10 +21,20 @@ class TabsController extends GetxController {
     const GiveView(),
     CartView(),
     const UserView()
+
+
+
+
   ];
   @override
   void onInit() {
     super.onInit();
+
+
+    if( Get.arguments != null ) {
+      currentIndex.value =  Get.arguments["initialPage"];
+    }
+
   }
 
   @override

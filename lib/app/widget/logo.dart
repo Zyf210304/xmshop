@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import '../services/screenAdapter.dart';
-import '../services/ityingFonts.dart';
 
-class LogoIcon extends StatelessWidget {
-  const LogoIcon({super.key});
+class Logo extends StatelessWidget {
+  const Logo({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-              margin: EdgeInsets.only(top: ScreenAdapter.width(40)),
-              child: const Icon(
-                ItyingFonts.xiaomi,
-                size: 80,
-                color: Color.fromARGB(255, 216, 57, 57),
-              ),
-            );
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(ScreenAdapter.width(40)),
+      child: SizedBox(
+        width: ScreenAdapter.width(220),
+        height: ScreenAdapter.width(220),
+        child: Image.asset("assets/images/logo.png", fit: BoxFit.cover),
+      ),
+    );
   }
 }

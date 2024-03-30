@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class OnSetpLoginController extends GetxController {
-  //TODO: Implement OnSetpLoginController
+class OnStepLoginController extends GetxController {
+  //TODO: Implement OnStepLoginController
 
   final count = 0.obs;
   @override

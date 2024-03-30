@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:xmshop/app/services/httpsClient.dart';
+import 'package:xmshop/app/widget/passButton.dart';
 import '../../../services/screenAdapter.dart';
 import '../controllers/user_controller.dart';
 
@@ -31,7 +32,7 @@ class UserView extends GetView<UserController> {
         padding: EdgeInsets.all(ScreenAdapter.height(20)),
         children: [
           //登录注册
-          Row(
+          Obx(() =>  controller.isLogin == false ? Row(
             children: [
               SizedBox(
                 width: ScreenAdapter.width(40),
@@ -64,7 +65,28 @@ class UserView extends GetView<UserController> {
                 color: Colors.black45,
               )
             ],
-          ),
+          ) : Row(
+            children: [
+              SizedBox(
+                width: ScreenAdapter.width(40),
+              ),
+              SizedBox(
+                width: ScreenAdapter.width(150),
+                height: ScreenAdapter.width(150),
+                child: CircleAvatar(
+                  radius: ScreenAdapter.width(75),
+                  backgroundImage: const AssetImage("assets/images/user.png"),
+                ),
+              ),
+              SizedBox(
+                width: ScreenAdapter.width(40),
+              ),
+              Text(
+                "${controller.userList[0]["username"]}",
+                style: TextStyle(fontSize: ScreenAdapter.fontSize(46)),
+              ),
+            ],
+          ) ),
 
           //用户资金信息
           Container(
@@ -273,6 +295,11 @@ class UserView extends GetView<UserController> {
               ),
             ),
           ),
+
+          //退出按钮
+          PassButton(text: "退出登录", onPressed: (){
+            controller.loginOut();
+          })
        ],
       ),
     );

@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 import '../../../services/ityingFonts.dart';
+import '../../../services/userServices.dart';
 
 class UserController extends GetxController {
   //TODO: Implement UserController
 
-  final count = 0.obs;
+  var isLogin = false.obs;
+  var userList = [].obs;
 
   var servicesTitleArr = [
     "一键安装",
@@ -30,6 +32,7 @@ class UserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getUserInfo();
   }
 
   @override
@@ -42,5 +45,25 @@ class UserController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+
+  getUserInfo() async{
+
+    var tempLoginState = await UserServices.getUserLoginState();
+    isLogin.value = tempLoginState;
+
+    var tempList = await UserServices.getUserInfo();
+    if (tempList!=[]) {
+      userList.value = tempList as List;
+    }
+
+  }
+
+
+  loginOut(){
+    UserServices.loginOut();
+    isLogin.value = false;
+    userList.value = [];
+    update();
+  }
+
 }
