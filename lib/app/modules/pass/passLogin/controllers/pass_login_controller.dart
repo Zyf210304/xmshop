@@ -3,8 +3,12 @@ import 'package:get/get.dart';
 import '../../../../models/message.dart';
 import '../../../../services/httpsClient.dart';
 import '../../../../services/storage.dart';
+import '../../../user/controllers/user_controller.dart';
+
 class PassLoginController extends GetxController {
   //TODO: Implement PassLoginController
+
+final UserController userController = Get.find();
 
   TextEditingController telController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -22,6 +26,7 @@ class PassLoginController extends GetxController {
 
   @override
   void onClose() {
+    userController.getUserInfo();
     super.onClose();
   }
 

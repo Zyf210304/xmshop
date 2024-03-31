@@ -42,7 +42,7 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
 
               MessageModel resulte = await controller.sendCode();
               if (resulte.success) {
-                Get.toNamed("/code-login-step-two", arguments: {"tel":controller.telController.text});
+                Get.offAndToNamed("/code-login-step-two", arguments: {"tel":controller.telController.text});
               } else {
                 Get.snackbar("提示", resulte.message);
               }
@@ -59,7 +59,7 @@ class CodeLoginStepOneView extends GetView<CodeLoginStepOneController> {
                 Get.toNamed("/register-step-one");
               }, child: Text("新用户注册")),
               TextButton(onPressed: (){
-                  Get.toNamed("/pass-login");
+                  Get.offAndToNamed("/pass-login");
               }, child: Text("账户密码登录"))
             ],
           )

@@ -33,7 +33,7 @@ class CartServices {
           "title":pcontent.title,
           "price":pcontent.price,
           "selectedAttr":selectedAttr,
-          "count":1,
+          "count":buyNum,
           "pic":HttpClient.replaceUri(pcontent.pic),
           "checked":true
           }

@@ -59,9 +59,11 @@ class CodeLoginStepTwoView extends GetView<CodeLoginStepTwoController> {
               onCompleted: (v) async {
                 MessageModel reslut = await controller.doLogin();
                 if (reslut.success) {
-                  Get.offAllNamed("/tabs", arguments: {"initialPage": 4});
+                  // Get.offAllNamed("/tabs", arguments: {"initialPage": 4});
                   // ignore: use_build_context_synchronously
                   FocusScope.of(context).requestFocus(FocusNode());
+                  Get.back();
+
                 } else {
                   Get.snackbar("提示", reslut.message);
                 }

@@ -50,9 +50,10 @@ class PassLoginView extends GetView<PassLoginController> {
                    MessageModel result = await controller.doLogin();
                   if (result.success) {
                     print("登录成功");
-                     Get.offAllNamed("/tabs", arguments: {
-                      "initialPage": 4 //注册完成后会加载tabs第五个页面
-                    });
+                    //  Get.offAllNamed("/tabs", arguments: {
+                    //   "initialPage": 4 //注册完成后会加载tabs第五个页面
+                    // });
+                    Get.back();
                   } else {
                      Get.snackbar("提示", result.message);
                   }

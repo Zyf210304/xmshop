@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 import '../../../../models/message.dart';
 import '../../../../services/httpsClient.dart';
 import '../../../../services/storage.dart';
+import '../../../user/controllers/user_controller.dart';
 
 class CodeLoginStepTwoController extends GetxController {
+
+  final UserController userController = Get.find();
 
   final TextEditingController editingController = TextEditingController();
   HttpClient httpsClient = HttpClient();
@@ -22,6 +25,8 @@ class CodeLoginStepTwoController extends GetxController {
   } 
   @override
   void onClose() {
+    print("----更新用户状态");
+    userController.getUserInfo();
     super.onClose();
   }
 

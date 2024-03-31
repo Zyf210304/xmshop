@@ -22,6 +22,11 @@ class CartView extends GetView {
           backgroundColor: Colors.white,
           title: const Text('购物车'),
           centerTitle: true,
+          actions: [
+            Obx(() => TextButton(onPressed: (){
+              controller.changeEditState();
+            }, child: Text(controller.isEdit.value ? "取消" : "编辑")))
+          ],
         ),
         body: GetBuilder<CartController>(
           initState: (state){
@@ -71,11 +76,12 @@ class CartView extends GetView {
                             const Text("全选")
                           ],
                         ),
-                        Row(
+                        Obx(() => Row(
                           children: [
-                            const Text("合计: "),
+                            
+                            Text(controller.isEdit.value ? "":"合计: "),
                             Text(
-                              "${controller.allPrice}",
+                              controller.isEdit.value ? "":"${controller.allPrice}",
                               style: TextStyle(
                                   fontSize: ScreenAdapter.fontSize(58),
                                   color: Colors.red),
@@ -86,14 +92,21 @@ class CartView extends GetView {
                             ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStateProperty.all(Colors.red),
+                                      MaterialStateProperty.all(controller.isEdit.value ? Colors.yellow : Colors.red),
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
                                 ),
-                                onPressed: () {},
-                                child: Text("结算"))
+                                onPressed: () {
+                                  if (controller.isEdit.value ) {
+                                    controller.deleteCartData();
+                                  } else {
+                                    controller.checkout();
+                                  }
+                                    
+                                },
+                                child: Text(controller.isEdit.value ? "删除" : "结算"))
                           ],
-                          )   
+                          )   )
                       ],
                     ),)
                   ))

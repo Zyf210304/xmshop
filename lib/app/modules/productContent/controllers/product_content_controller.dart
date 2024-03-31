@@ -6,6 +6,8 @@ import '../../../services/screenAdapter.dart';
 import '../../../models/pcount_model.dart';
 import '../../../services/httpsClient.dart';
 import '../../../services/cartServices.dart';
+import '../../../services/storage.dart';
+import '../../../services/userServices.dart';
 
 
 class ProductContentController extends GetxController {
@@ -205,6 +207,8 @@ class ProductContentController extends GetxController {
     }
 
     selectedAttr.value =tempList.join(",");
+    print("-------");
+    print(selectedAttr.value);
     update();
     
   }
@@ -226,6 +230,7 @@ class ProductContentController extends GetxController {
         buyNumber.value --;
       }
     }
+
   }
 
 //加入购物车
@@ -239,10 +244,43 @@ class ProductContentController extends GetxController {
   }
 
 
-//立即购买
-  buy() {
-    setSelectedAttr();
-    Get.back();
+
+  
+  //判断用户有没有登录
+  Future<bool> isLogin() async {
+    return await UserServices.getUserLoginState();
   }
   
+  //获取购买的商品
+  savecheckoutData(PcountItemModel pcontent,  String selectedAttr, int buyNum) {
+    
+    var  cartListData = [];
+    cartListData.add(
+          {
+          "_id":pcontent.sId, 
+          "title":pcontent.title,
+          "price":pcontent.price,
+          "selectedAttr":selectedAttr,
+          "count":buyNumber.value,
+          "pic":HttpClient.replaceUri(pcontent.pic),
+          "checked":true
+          }
+        );
+    print(cartListData);
+    Storage.setData("checkoutListData", cartListData);
+  }
+
+  //购买按钮点击事件
+  buy() async {
+    bool loginState = await isLogin();
+    if (loginState) {
+        setSelectedAttr();
+        savecheckoutData(pcontent.value, selectedAttr.value, buyNumber.value);
+        Get.toNamed("/checkout");
+
+    } else {
+      Get.toNamed("/code-login-step-one");
+    }
+  }
+
 }
