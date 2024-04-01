@@ -42,6 +42,19 @@ class AddressListView extends GetView<AddressListController> {
                             ListTile(
                               leading: model.defaultAddress == 1 ? const Icon(Icons.check, color: Colors.red,) : null,
                               title: InkWell(
+                                onLongPress: () {
+                                  if (index != 0) {
+                                    Get.defaultDialog(
+                                      title: "提示",
+                                      middleText: "您确定要删除该地址吗？",
+                                      confirm: ElevatedButton(onPressed: (){
+                                        controller.deleteAddress(model.sId);
+                                        Get.back();
+                                      }, child: const Text("确认")),
+                                      cancel: ElevatedButton(onPressed: (){Get.back();}, child: const Text("取消")),
+                                    );
+                                  }
+                                },
                                 onTap: () {
                                   controller.changeDefalueAddress(model.sId);
                                 },
@@ -66,6 +79,7 @@ class AddressListView extends GetView<AddressListController> {
                               ),
                               trailing: IconButton(
                                 onPressed: (){
+                                  controller.getNeedChangeAddress(model);
                                   Get.toNamed("/address-edit");
                                 },
                                 icon:const Icon(

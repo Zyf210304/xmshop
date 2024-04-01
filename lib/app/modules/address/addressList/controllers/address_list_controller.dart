@@ -16,6 +16,9 @@ class AddressListController extends GetxController {
 
   CheckoutController checkoutController = Get.find();
 
+  var needChangeAddressModel = AddressItemModel().obs;
+
+
   @override 
   void onInit() {
     super.onInit();
@@ -76,5 +79,32 @@ class AddressListController extends GetxController {
 
   }
 
+  deleteAddress(id) async {
+
+     List userList = await UserServices.getUserInfo();
+    var userInfo = Userinfo.fromJson(userList[0]);
+    Map tempJson = {"uid": userInfo.sid, "id":id};
+
+    var sign = SignServices.getSign({
+      ...tempJson,
+      "salt": userInfo.salt,
+    });
+
+    var response = await httpClient.post("api/deleteAddress", data: {
+      ...tempJson,
+      "sign":sign,
+    });
+    
+    if (response != null) {
+      // Get.back();
+      getAddressList();
+    }
+
+  }
+
+  getNeedChangeAddress(AddressItemModel model) {
+    needChangeAddressModel.value  = model;
+    
+  }
 
 }

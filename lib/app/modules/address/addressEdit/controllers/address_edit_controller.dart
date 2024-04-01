@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../models/address_model.dart';
 
 import '../../../../models/user_model.dart';
 import '../../../../services/signServices.dart';
 import '../../../../services/userServices.dart';
 import '../../../../services/httpsClient.dart';
 import '../../addressList/controllers/address_list_controller.dart';
+
 
 class AddressEditController extends GetxController {
   //TODO: Implement AddressEditController
@@ -20,10 +22,21 @@ class AddressEditController extends GetxController {
 
   AddressListController addressListController = Get.find();
 
+  late AddressItemModel addressModel;
+
+
   @override
   void onInit() {
     super.onInit();
-    changedArea("");
+    addressModel = addressListController.needChangeAddressModel.value;
+    nameController.text = addressModel.name!;
+    phoneController.text = addressModel.phone!;
+
+    List addressList = addressModel.address!.split(" ");
+    area.value = "${addressList[0]} ${addressList[1]} ${addressList[2]}";
+    addreeController.text = addressList.last!;
+
+
   }
 
   @override
@@ -42,7 +55,7 @@ class AddressEditController extends GetxController {
     update();
   }
 
-  doAddAddress() async {
+  doEditAddress() async {
     List userList = await UserServices.getUserInfo();
     var userInfo = Userinfo.fromJson(userList[0]);
     if (nameController.text.length < 2) {
@@ -56,6 +69,7 @@ class AddressEditController extends GetxController {
       Get.snackbar("提示信息", "请填写详细的地址");
     } else {
       Map tempJson = {
+        "id":addressModel.sId,
         "uid": userInfo.sid,
         "name": nameController.text,
         "phone": phoneController.text,
@@ -66,8 +80,9 @@ class AddressEditController extends GetxController {
         "salt": userInfo.salt, //登录成功后服务器返回的salt  私钥
       });
       var response = await httpClient
-          .post("api/addAddress", data: {...tempJson, "sign": sign});
+          .post("api/editAddress", data: {...tempJson, "sign": sign});
       if (response.data["success"]) {
+        addressListController.getAddressList();
         Get.back();
       } else {
         Get.snackbar("提示信息", response.data["message"]);

@@ -136,7 +136,7 @@ class AddressEditView extends GetView<AddressEditController> {
               onTap: () {
                 
                 //保存地址
-                controller.doAddAddress();
+                controller.doEditAddress();
 
 
               },
@@ -147,7 +147,7 @@ class AddressEditView extends GetView<AddressEditController> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8), color: Colors.red),
                 child: const Text(
-                  "保存",
+                  "修改",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),

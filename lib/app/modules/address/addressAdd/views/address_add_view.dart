@@ -7,7 +7,7 @@ import '../../../../services/screenAdapter.dart';
 import '../controllers/address_add_controller.dart';
 
 class AddressAddView extends GetView<AddressAddController> {
-  
+
   Widget meessgeWidget(title, hintText,
       {keyboardType = TextInputType.text,
       isHaveDivider = true,
@@ -103,7 +103,7 @@ class AddressAddView extends GetView<AddressAddController> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 249, 246),
       appBar: AppBar(
-        title: const Text('添加地址'),
+        title: const Text('修改地址'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
