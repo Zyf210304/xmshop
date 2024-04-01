@@ -57,50 +57,58 @@ class CheckoutView extends GetView<CheckoutController> {
     return ListView(
       padding: EdgeInsets.all(ScreenAdapter.width(40)),
       children: [
-        //添加收货地址
-        Container(
-          padding: EdgeInsets.fromLTRB(
-              0, ScreenAdapter.width(20), 0, ScreenAdapter.width(20)),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-          child: const ListTile(
-            leading: Icon(Icons.add_location),
-            title: Text("增加收货地址"),
-            trailing: Icon(Icons.navigate_next),
-          ),
-        ),
-
-        //收货地址
-        Container(
-            margin: EdgeInsets.only(top: ScreenAdapter.width(40)),
-            padding: EdgeInsets.fromLTRB(ScreenAdapter.width(40),
-                ScreenAdapter.width(30), 0, ScreenAdapter.width(30)),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(ScreenAdapter.width(20))),
-            child: Row(
-              children: [
-                const Expanded(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        Obx(() => controller.addressList.isEmpty
+            ? Container(
+                padding: EdgeInsets.fromLTRB(
+                    0, ScreenAdapter.width(20), 0, ScreenAdapter.width(20)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(ScreenAdapter.width(20))),
+                child: ListTile(
+                  onTap: () {
+                    Get.toNamed("/address-list");
+                  },
+                  leading: const Icon(Icons.add_location),
+                  title: const Text("增加收货地址"),
+                  trailing: const Icon(Icons.navigate_next),
+                ),
+              )
+            : InkWell(
+              onTap: () {
+                Get.toNamed("/address-list");
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: ScreenAdapter.width(40)),
+                padding: EdgeInsets.fromLTRB(ScreenAdapter.width(40),
+                    ScreenAdapter.width(30), 0, ScreenAdapter.width(30)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(ScreenAdapter.width(20))),
+                child: Row(
                   children: [
-                    Text("张三 129291829813"),
-                    SizedBox(
-                      height: 10,
+                     Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("${controller.addressList[0].name} ${controller.addressList[0].phone} "),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text("${controller.addressList[0].address}"),
+                      ],
+                    )),
+                    Container(
+                      margin: const EdgeInsets.only(right: 20),
+                      width: ScreenAdapter.width(100),
+                      child: const Center(
+                        child: Icon(Icons.navigate_next),
+                      ),
                     ),
-                    Text("北京西二旗"),
                   ],
                 )),
-                Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  width: ScreenAdapter.width(100),
-                  child: const Center(
-                    child: Icon(Icons.navigate_next),
-                  ),
-                ),
-              ],
             )),
 
         //商品信息
