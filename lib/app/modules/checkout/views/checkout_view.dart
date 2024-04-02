@@ -6,6 +6,8 @@ import '../../../services/screenAdapter.dart';
 import '../controllers/checkout_controller.dart';
 import '../../../models/pcount_model.dart';
 
+
+
 class CheckoutView extends GetView<CheckoutController> {
   Widget checkoutItem(value) {
     return Container(
@@ -226,7 +228,9 @@ class CheckoutView extends GetView<CheckoutController> {
                         foregroundColor:
                             MaterialStateProperty.all(Colors.white),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        controller.doCheckout();
+                      },
                       child: const Text("去付款"))
                 ],
               )),

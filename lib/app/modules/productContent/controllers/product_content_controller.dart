@@ -276,7 +276,7 @@ class ProductContentController extends GetxController {
     if (loginState) {
         setSelectedAttr();
         savecheckoutData(pcontent.value, selectedAttr.value, buyNumber.value);
-        Get.toNamed("/checkout");
+        Get.toNamed("/checkout", arguments: {"isFromCart": false});
 
     } else {
       Get.toNamed("/code-login-step-one");

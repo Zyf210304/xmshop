@@ -142,7 +142,7 @@ class CartController extends GetxController {
         Get.snackbar("提示", "请选择购买的商品");
       } else {
         savecheckoutData();
-        Get.toNamed("/checkout");
+        Get.toNamed("/checkout", arguments: {"isFromCart": true});
       }
     } else {
       Get.toNamed("/code-login-step-one");
