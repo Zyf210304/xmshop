@@ -33,14 +33,16 @@ import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
 import '../modules/tabs/bindings/tabs_binding.dart';
 import '../modules/tabs/views/tabs_view.dart';
+import '../modules/testPage/bindings/test_page_binding.dart';
+import '../modules/testPage/views/test_page_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.TABS;
-  // static const INITIAL = Routes.ADDRESS_ADD;
+  // static const INITIAL = Routes.TABS;
+  static const INITIAL = Routes.TEST_PAGE;
 
   static final routes = [
     GetPage(
@@ -129,6 +131,11 @@ class AppPages {
       name: _Paths.BUY,
       page: () => const BuyView(),
       binding: BuyBinding(),
+    ),
+    GetPage(
+      name: _Paths.TEST_PAGE,
+      page: () => const TestPageView(),
+      binding: TestPageBinding(),
     ),
   ];
 }

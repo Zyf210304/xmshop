@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 void main() {
 
   //设置透明的状态栏

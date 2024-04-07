@@ -21,6 +21,7 @@ abstract class Routes {
   static const ADDRESS_ADD = _Paths.ADDRESS_ADD;
   static const ADDRESS_EDIT = _Paths.ADDRESS_EDIT;
   static const BUY = _Paths.BUY;
+  static const TEST_PAGE = _Paths.TEST_PAGE;
 }
 
 abstract class _Paths {
@@ -42,4 +43,5 @@ abstract class _Paths {
   static const ADDRESS_ADD = '/address-add';
   static const ADDRESS_EDIT = '/address-edit';
   static const BUY = '/buy';
+  static const TEST_PAGE = '/test-page';
 }
